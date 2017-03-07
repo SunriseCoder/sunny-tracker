@@ -31,7 +31,7 @@ function parentChanged() {
 				</tr>
 				<tr>
 					<td>Description:</td>
-					<td><form:input path="description" /></td>
+					<td><form:textarea path="description" rows="20" cols="100" /></td>
 					<td><form:errors path="description" cssStyle="color: red;" /></td>
 				</tr>
 				<tr>
