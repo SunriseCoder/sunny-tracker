@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import tracker.model.Issue;
 import tracker.model.IssueType;
 import tracker.model.Project;
 import tracker.service.IssueService;
@@ -20,39 +21,64 @@ import tracker.structures.ProjectIssueTypesStructure;
 @Controller
 @RequestMapping(value = "/")
 public class NavigationController {
-	@Autowired
-	private IssueService issueService;
-	@Autowired
-	private ProjectService projectService;
-	@Autowired
-	private IssueTypeService issueTypeService;
+    @Autowired
+    private IssueService issueService;
+    @Autowired
+    private ProjectService projectService;
+    @Autowired
+    private IssueTypeService issueTypeService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView index() {
-		ModelAndView mav = new ModelAndView("main");
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView index() {
+        ModelAndView mav = new ModelAndView("main");
 
-		List<ProjectIssueTypesStructure> structures = new ArrayList<ProjectIssueTypesStructure>();
-		List<IssueType> issueTypes = issueTypeService.findAll();
+        List<ProjectIssueTypesStructure> structures = new ArrayList<ProjectIssueTypesStructure>();
+        List<IssueType> issueTypes = issueTypeService.findAll();
 
-		for (Project project : projectService.findAll()) {
-			ProjectIssueTypesStructure projectStructure = new ProjectIssueTypesStructure();
-			projectStructure.setProject(project);
-			List<IssueTypeIssuesStructure> issueTypeStructures = new ArrayList<IssueTypeIssuesStructure>();
+        for (Project project : projectService.findAll()) {
+            ProjectIssueTypesStructure projectStructure = new ProjectIssueTypesStructure();
+            projectStructure.setProject(project);
+            List<IssueTypeIssuesStructure> issueTypeStructures = new ArrayList<IssueTypeIssuesStructure>();
 
-			for (IssueType issueType : issueTypes) {
-				IssueTypeIssuesStructure issueTypeStructure = new IssueTypeIssuesStructure();
-				issueTypeStructure.setIssueType(issueType);
-				issueTypeStructure.setIssues(issueService.findRootIssues(project.getId(), issueType.getId()));
-				issueTypeStructures.add(issueTypeStructure);
-			}
-			
-			projectStructure.setIssueTypeStructures(issueTypeStructures);
-			structures.add(projectStructure);
-		}
+            for (IssueType issueType : issueTypes) {
+                IssueTypeIssuesStructure issueTypeStructure = new IssueTypeIssuesStructure();
+                issueTypeStructure.setIssueType(issueType);
+                List<Issue> rootIssues = issueService.findRootIssues(project.getId(), issueType.getId());
+                sortChildIssuesRecursively(rootIssues);
+                issueTypeStructure.setIssues(rootIssues);
+//                issueTypeStructure.setIssues(issueService.findRootIssues(project.getId(), issueType.getId()));
+                issueTypeStructures.add(issueTypeStructure);
+            }
 
-		mav.addObject("structures", structures);
-		mav.addObject("issueTypes", issueTypes);
+            projectStructure.setIssueTypeStructures(issueTypeStructures);
+            structures.add(projectStructure);
+        }
 
-		return mav;
-	}
+        mav.addObject("structures", structures);
+        mav.addObject("issueTypes", issueTypes);
+
+        return mav;
+    }
+
+    private void sortChildIssuesRecursively(List<Issue> issues) {
+        if (issues.isEmpty()) {
+            return;
+        }
+
+        issues.sort((a, b) -> {
+            int as = a.getStatus().getIssuePosition();
+            int bs = b.getStatus().getIssuePosition();
+            if (as != bs) {
+                return as - bs;
+            }
+            int ap = a.getPriority().getIssuePosition();
+            int bp = b.getPriority().getIssuePosition();
+            return ap - bp;
+        });
+
+        for (Issue issue : issues) {
+            List<Issue> childs = issue.getChilds();
+            sortChildIssuesRecursively(childs);
+        }
+    }
 }
