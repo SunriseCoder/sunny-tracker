@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="1" author="Sun">
+        <createTable tableName="projects">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="position" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <insert tableName="projects">
+            <column name="name" value="Project1" />
+            <column name="position" value="1" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="2" author="Sun">
+        <createTable tableName="issue_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="position" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <insert tableName="issue_types">
+            <column name="name" value="Bug" />
+            <column name="position" value="1" />
+        </insert>
+        <insert tableName="issue_types">
+            <column name="name" value="Task" />
+            <column name="position" value="2" />
+        </insert>
+        <insert tableName="issue_types">
+            <column name="name" value="Idea" />
+            <column name="position" value="3" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="Sun">
+        <createTable tableName="issues">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="parent_id" type="int">
+                <constraints primaryKey="false" nullable="true" foreignKeyName="fk_issues_parent"
+                             referencedTableName="issues" referencedColumnNames="id" />
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(2000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="type_id" type="int">
+                <constraints primaryKey="false" nullable="false" foreignKeyName="fk_issues_type"
+                             referencedTableName="issue_types" referencedColumnNames="id" />
+            </column>
+            <column name="project_id" type="int">
+                <constraints primaryKey="false" nullable="false" foreignKeyName="fk_issues_project"
+                             referencedTableName="projects" referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="Sun">
+        <createTable tableName="issue_statuses">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="position" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="issuePosition" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <insert tableName="issue_statuses">
+            <column name="name" value="New" />
+            <column name="position" value="1" />
+            <column name="issuePosition" value="2" />
+        </insert>
+        <insert tableName="issue_statuses">
+            <column name="name" value="Active" />
+            <column name="position" value="2" />
+            <column name="issuePosition" value="1" />
+        </insert>
+        <insert tableName="issue_statuses">
+            <column name="name" value="Closed" />
+            <column name="position" value="3" />
+            <column name="issuePosition" value="3" />
+        </insert>
+
+        <addColumn tableName="issues">
+            <column name="status_id" type="int" />
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="issues" baseColumnNames="status_id" constraintName="fk_issues_status"
+                                 referencedTableName="issue_statuses" referencedColumnNames="id" />
+
+        <update tableName="issues">
+            <column name="status_id" valueNumeric="1" />
+        </update>
+
+        <addNotNullConstraint tableName="issues" columnDataType="int" columnName="status_id" />
+    </changeSet>
+
+    <changeSet id="5" author="Sun">
+        <createTable tableName="issue_priorities">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="position" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="issuePosition" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <insert tableName="issue_priorities">
+            <column name="name" value="High" />
+            <column name="position" value="3" />
+            <column name="issuePosition" value="1" />
+        </insert>
+        <insert tableName="issue_priorities">
+            <column name="name" value="Medium" />
+            <column name="position" value="2" />
+            <column name="issuePosition" value="2" />
+        </insert>
+        <insert tableName="issue_priorities">
+            <column name="name" value="Low" />
+            <column name="position" value="1" />
+            <column name="issuePosition" value="3" />
+        </insert>
+
+        <addColumn tableName="issues">
+            <column name="priority_id" type="int" />
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="issues" baseColumnNames="priority_id" constraintName="fk_issues_priority"
+                                 referencedTableName="issue_priorities" referencedColumnNames="id" />
+
+        <update tableName="issues">
+            <column name="priority_id" valueNumeric="2" />
+        </update>
+
+        <addNotNullConstraint tableName="issues" columnDataType="int" columnName="priority_id" />
+    </changeSet>
+
+    <changeSet id="6" author="Sun">
+        <addColumn tableName="issues">
+            <column name="changed" type="datetime" afterColumn="description" />
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

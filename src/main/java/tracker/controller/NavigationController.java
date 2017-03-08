@@ -1,5 +1,6 @@
 package tracker.controller;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,9 +72,18 @@ public class NavigationController {
             if (as != bs) {
                 return as - bs;
             }
+
             int ap = a.getPriority().getIssuePosition();
             int bp = b.getPriority().getIssuePosition();
-            return ap - bp;
+            if (ap != bp) {
+                return ap - bp;
+            }
+
+            Date ac = a.getChanged();
+            Date bc = b.getChanged();
+            long acl = ac == null ? Long.MIN_VALUE : ac.getTime();
+            long bcl = bc == null ? Long.MIN_VALUE : bc.getTime();
+            return acl < bcl ? 1 : acl == bcl ? 0 : -1;
         });
 
         for (Issue issue : issues) {
