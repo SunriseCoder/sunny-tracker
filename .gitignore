@@ -21,4 +21,5 @@ hs_err_pid*
 target/
 
 # Environmental resources
-src/main/resources/env/
+src/main/resources/env/prod/
+src/main/resources/env/uat/
