@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+
+<%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%@taglib tagdir="/WEB-INF/tags" prefix="t" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -32,7 +32,13 @@
 </style>
 </head>
 <body>
-	<h1>Welcome to Sunny Tracker</h1>
+    <spring:eval var="env" expression="@environment.getProperty('environment')" />
+    <h1>Welcome to Sunny Tracker
+        <c:if test="${not empty env}">
+            (${env})
+        </c:if>
+    </h1>
+
 	Pages: <br />
 	<a href="${pageContext.request.contextPath}/project">Projects</a><br />
 	<a href="${pageContext.request.contextPath}/issue-type">Issue Types</a><br />
