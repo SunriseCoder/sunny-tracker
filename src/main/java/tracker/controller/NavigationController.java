@@ -2,6 +2,7 @@ package tracker.controller;
 
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,8 @@ public class NavigationController {
                 issueTypeStructure.setIssueType(issueType);
                 List<Issue> rootIssues = issueService.findRootIssues(project.getId(), issueType.getId());
                 sortChildIssuesRecursively(rootIssues);
+                Collections.sort(rootIssues, (a, b) -> a.getName().compareTo(b.getName()));
                 issueTypeStructure.setIssues(rootIssues);
-//                issueTypeStructure.setIssues(issueService.findRootIssues(project.getId(), issueType.getId()));
                 issueTypeStructures.add(issueTypeStructure);
             }
 
