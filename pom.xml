@@ -70,7 +70,7 @@
                                 <url>${deploy.tomcat.url}</url>
                                 <username>${deploy.tomcat.username}</username>
                                 <password>${deploy.tomcat.password}</password>
-                                <path>/</path>
+                                <path>/sunny-tracker</path>
                             </configuration>
                         </execution>
                     </executions>
@@ -153,10 +153,11 @@
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy file="src/main/resources/env/dev/application.properties"
                                       toFile="${project.build.outputDirectory}/application.properties" />
-                            </tasks>
+                                <delete dir="${project.build.outputDirectory}/env" />
+                            </target>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -178,10 +179,11 @@
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy file="src/main/resources/env/prod/application.properties"
                                       toFile="${project.build.outputDirectory}/application.properties" />
-                            </tasks>
+                                <delete dir="${project.build.outputDirectory}/env" />
+                            </target>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -203,10 +205,11 @@
                     <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <copy file="src/main/resources/env/uat/application.properties"
                                       toFile="${project.build.outputDirectory}/application.properties" />
-                            </tasks>
+                                <delete dir="${project.build.outputDirectory}/env" />
+                            </target>
                         </configuration>
                     </plugin>
                     <plugin>
