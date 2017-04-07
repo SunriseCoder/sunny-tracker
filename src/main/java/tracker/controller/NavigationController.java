@@ -1,14 +1,14 @@
 package tracker.controller;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import tracker.dto.IssueTypeIssuesDTO;
@@ -21,7 +21,7 @@ import tracker.service.IssueTypeService;
 import tracker.service.ProjectService;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping("/")
 public class NavigationController {
     @Autowired
     private IssueService issueService;
@@ -30,7 +30,7 @@ public class NavigationController {
     @Autowired
     private IssueTypeService issueTypeService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView("main");
 
