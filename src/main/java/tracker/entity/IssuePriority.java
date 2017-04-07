@@ -1,4 +1,4 @@
-package tracker.model;
+package tracker.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,8 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "issue_statuses")
-public class IssueStatus {
+@Table(name = "issue_priorities")
+public class IssuePriority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -50,7 +50,7 @@ public class IssueStatus {
 
     @Override
     public String toString() {
-        return String.format("IssueStatus{id: %s, name: %s, position: %s, issue-position: %s}",
+        return String.format("IssuePriority{id: %s, name: %s, position: %s, issue-position: %s}",
                 id, name, position, issuePosition);
     }
 }

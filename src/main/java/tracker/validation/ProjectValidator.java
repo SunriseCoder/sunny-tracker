@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import tracker.model.Project;
+import tracker.entity.Project;
 
 @Component
 public class ProjectValidator implements Validator {

@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import tracker.model.IssuePriority;
+import tracker.entity.IssuePriority;
 
 @Component
 public class IssuePriorityValidator implements Validator {

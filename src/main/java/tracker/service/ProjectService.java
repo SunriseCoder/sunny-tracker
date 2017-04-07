@@ -2,8 +2,8 @@ package tracker.service;
 
 import java.util.List;
 
+import tracker.entity.Project;
 import tracker.exception.ProjectNotFound;
-import tracker.model.Project;
 
 public interface ProjectService {
 	public List<Project> findAll();

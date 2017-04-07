@@ -2,9 +2,12 @@ package tracker.service;
 
 import java.util.List;
 
-import tracker.exception.IssueNotFound;
-import tracker.model.Issue;
+import org.springframework.stereotype.Service;
 
+import tracker.entity.Issue;
+import tracker.exception.IssueNotFound;
+
+@Service
 public interface IssueService {
 	public List<Issue> findAll();
 	public Issue create(Issue issue) throws IssueNotFound;

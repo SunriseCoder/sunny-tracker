@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import tracker.entity.Project;
 import tracker.exception.ProjectNotFound;
-import tracker.model.Project;
 import tracker.service.ProjectService;
 import tracker.validation.ProjectValidator;
 

@@ -1,11 +1,11 @@
-package tracker.structures;
+package tracker.dto;
 
 import java.util.List;
 
-import tracker.model.Issue;
-import tracker.model.IssueType;
+import tracker.entity.Issue;
+import tracker.entity.IssueType;
 
-public class IssueTypeIssuesStructure {
+public class IssueTypeIssuesDTO {
 	private IssueType issueType;
 	private List<Issue> issues;
 

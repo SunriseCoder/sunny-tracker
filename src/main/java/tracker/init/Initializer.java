@@ -1,21 +1,13 @@
 package tracker.init;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration.Dynamic;
-
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
-
-public class Initializer implements WebApplicationInitializer {
+/*public class Initializer implements WebApplicationInitializer {
 
 	private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
 
+	@Override
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
-		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+		/*AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 		ctx.register(WebAppConfig.class);
 		servletContext.addListener(new ContextLoaderListener(ctx));
 
@@ -27,4 +19,4 @@ public class Initializer implements WebApplicationInitializer {
 		servlet.setLoadOnStartup(1);
 	}
 
-}
+}*/

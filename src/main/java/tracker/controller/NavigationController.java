@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import tracker.model.Issue;
-import tracker.model.IssueType;
-import tracker.model.Project;
+import tracker.dto.IssueTypeIssuesDTO;
+import tracker.dto.ProjectIssueTypesDTO;
+import tracker.entity.Issue;
+import tracker.entity.IssueType;
+import tracker.entity.Project;
 import tracker.service.IssueService;
 import tracker.service.IssueTypeService;
 import tracker.service.ProjectService;
-import tracker.structures.IssueTypeIssuesStructure;
-import tracker.structures.ProjectIssueTypesStructure;
 
 @Controller
 @RequestMapping(value = "/")
@@ -34,16 +34,16 @@ public class NavigationController {
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView("main");
 
-        List<ProjectIssueTypesStructure> structures = new ArrayList<ProjectIssueTypesStructure>();
+        List<ProjectIssueTypesDTO> structures = new ArrayList<ProjectIssueTypesDTO>();
         List<IssueType> issueTypes = issueTypeService.findAll();
 
         for (Project project : projectService.findAll()) {
-            ProjectIssueTypesStructure projectStructure = new ProjectIssueTypesStructure();
+            ProjectIssueTypesDTO projectStructure = new ProjectIssueTypesDTO();
             projectStructure.setProject(project);
-            List<IssueTypeIssuesStructure> issueTypeStructures = new ArrayList<IssueTypeIssuesStructure>();
+            List<IssueTypeIssuesDTO> issueTypeStructures = new ArrayList<IssueTypeIssuesDTO>();
 
             for (IssueType issueType : issueTypes) {
-                IssueTypeIssuesStructure issueTypeStructure = new IssueTypeIssuesStructure();
+                IssueTypeIssuesDTO issueTypeStructure = new IssueTypeIssuesDTO();
                 issueTypeStructure.setIssueType(issueType);
                 List<Issue> rootIssues = issueService.findRootIssues(project.getId(), issueType.getId());
                 sortChildIssuesRecursively(rootIssues);

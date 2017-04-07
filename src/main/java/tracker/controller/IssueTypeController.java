@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import tracker.entity.IssueType;
 import tracker.exception.IssueTypeNotFound;
-import tracker.model.IssueType;
 import tracker.service.IssueTypeService;
 import tracker.validation.IssueTypeValidator;
 

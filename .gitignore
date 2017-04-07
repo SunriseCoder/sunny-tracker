@@ -16,6 +16,8 @@ hs_err_pid*
 .classpath
 .project
 .settings/
+.factorypath
+.springBeans
 
 # Build folder(s)
 target/

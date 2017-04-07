@@ -10,9 +10,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tracker.dao.IssueStatusRepository;
+import tracker.entity.IssueStatus;
 import tracker.exception.IssueStatusNotFound;
-import tracker.model.IssueStatus;
-import tracker.repository.IssueStatusRepository;
 
 @Service
 public class IssueStatusServiceImpl implements IssueStatusService {

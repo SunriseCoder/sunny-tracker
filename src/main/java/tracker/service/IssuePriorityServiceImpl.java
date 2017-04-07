@@ -10,9 +10,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tracker.dao.IssuePriorityRepository;
+import tracker.entity.IssuePriority;
 import tracker.exception.IssuePriorityNotFound;
-import tracker.model.IssuePriority;
-import tracker.repository.IssuePriorityRepository;
 
 @Service
 public class IssuePriorityServiceImpl implements IssuePriorityService {

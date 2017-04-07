@@ -2,8 +2,8 @@ package tracker.service;
 
 import java.util.List;
 
+import tracker.entity.IssuePriority;
 import tracker.exception.IssuePriorityNotFound;
-import tracker.model.IssuePriority;
 
 public interface IssuePriorityService {
 	public List<IssuePriority> findAll();

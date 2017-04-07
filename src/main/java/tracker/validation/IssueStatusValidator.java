@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import tracker.model.IssueStatus;
+import tracker.entity.IssueStatus;
 
 @Component
 public class IssueStatusValidator implements Validator {

@@ -3,21 +3,20 @@ package tracker.service;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import tracker.dao.IssueRepository;
+import tracker.entity.Issue;
 import tracker.exception.IssueNotFound;
-import tracker.model.Issue;
-import tracker.repository.IssueRepository;
 
-@Service
+@Component
 public class IssueServiceImpl implements IssueService {
-    @Resource
+    @Autowired
     private IssueRepository repository;
     private Sort sort;
 

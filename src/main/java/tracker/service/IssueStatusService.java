@@ -2,8 +2,8 @@ package tracker.service;
 
 import java.util.List;
 
+import tracker.entity.IssueStatus;
 import tracker.exception.IssueStatusNotFound;
-import tracker.model.IssueStatus;
 
 public interface IssueStatusService {
 	public List<IssueStatus> findAll();

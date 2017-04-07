@@ -10,9 +10,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import tracker.dao.ProjectRepository;
+import tracker.entity.Project;
 import tracker.exception.ProjectNotFound;
-import tracker.model.Project;
-import tracker.repository.ProjectRepository;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
