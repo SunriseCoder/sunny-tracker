@@ -2,15 +2,12 @@ package tracker.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "issue_statuses")
+@Entity(name = "issue_statuses")
 public class IssueStatus {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private String name;
     private int position;
@@ -50,7 +47,7 @@ public class IssueStatus {
 
     @Override
     public String toString() {
-        return String.format("IssueStatus{id: %s, name: %s, position: %s, issue-position: %s}",
-                id, name, position, issuePosition);
+        return String.format("IssueStatus{id: %s, name: %s, position: %s, issue-position: %s}", id, name, position,
+                issuePosition);
     }
 }

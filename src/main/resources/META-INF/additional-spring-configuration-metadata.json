@@ -1,0 +1,9 @@
+{
+    "properties": [
+        {
+            "name": "environment",
+            "type": "java.lang.String",
+            "description": "Text to distinguish what kind of environmend application run under"
+        }
+    ]
+}
