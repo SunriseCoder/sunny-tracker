@@ -152,7 +152,7 @@ public class IssueController {
         redirectAttributes.addFlashAttribute("message", message);
         redirectAttributes.addFlashAttribute("name", issue.getName());
 
-        return REDIRECT_PAGE_ISSUE;
+        return REDIRECT_PAGE_HOME;
     }
 
     @GetMapping("/delete/{id}")
