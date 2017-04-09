@@ -36,6 +36,7 @@ import tracker.validation.IssueValidator;
 @Controller
 @RequestMapping("/issue")
 public class IssueController {
+    private static final String REDIRECT_PAGE_HOME = "redirect:/";
     private static final String REDIRECT_PAGE_ISSUE = "redirect:/issue";
     private static final String PAGE_LIST = "issue/list";
     private static final String PAGE_CREATE = "issue/create";
@@ -216,7 +217,7 @@ public class IssueController {
         redirectAttributes.addFlashAttribute("message", message);
         redirectAttributes.addFlashAttribute("name", issue.getName());
 
-        return REDIRECT_PAGE_ISSUE;
+        return REDIRECT_PAGE_HOME;
     }
 
     private void injectIssueTree(Model model, Issue issue) {
