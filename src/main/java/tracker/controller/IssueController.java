@@ -203,7 +203,7 @@ public class IssueController {
             if (rootIssue.getId().equals(issue.getParent().getId())) {
                 issue.setParent(null);
             }
-            if (issue.getId().equals(issue.getParent().getId())) {
+            if (issue.getParent() != null && issue.getId().equals(issue.getParent().getId())) {
                 Issue storedIssue = issueService.findById(id);
                 issue.setParent(storedIssue.getParent());
             }
@@ -211,6 +211,8 @@ public class IssueController {
             message = "Issue \"" + issue.getId() + ": " + issue.getName() + "\" has been updated.";
         } catch (Exception e) {
             error = "An error occured, " + e.getMessage();
+            redirectAttributes.addFlashAttribute("error", error);
+            return REDIRECT_PAGE_ISSUE;
         }
 
         redirectAttributes.addFlashAttribute("error", error);
