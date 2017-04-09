@@ -4,6 +4,21 @@
             "name": "environment",
             "type": "java.lang.String",
             "description": "Text to distinguish what kind of environmend application run under"
+        },
+        {
+            "name": "deploy.tomcat.url",
+            "type": "java.lang.String",
+            "description": "Url for deploy using tomcat7-maven-plugin"
+        },
+        {
+            "name": "deploy.tomcat.username",
+            "type": "java.lang.String",
+            "description": "Deployer username"
+        },
+        {
+            "name": "deploy.tomcat.password",
+            "type": "java.lang.String",
+            "description": "Deployer password"
         }
     ]
 }
