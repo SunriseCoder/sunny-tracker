@@ -1,11 +1,13 @@
 package tracker.controller;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tracker.entity.Issue;
@@ -35,7 +36,7 @@ import tracker.validation.IssueValidator;
 @Controller
 @RequestMapping("/issue")
 public class IssueController {
-    private static final String REDIRECT_PROJECT = "redirect:/issue";
+    private static final String REDIRECT_PAGE_ISSUE = "redirect:/issue";
     private static final String PAGE_LIST = "issue/list";
     private static final String PAGE_CREATE = "issue/create";
     private static final String PAGE_EDIT = "issue/edit";
@@ -67,20 +68,20 @@ public class IssueController {
     }
 
     @GetMapping("")
-    public ModelAndView issueListPage() {
-        ModelAndView mav = new ModelAndView(PAGE_LIST, "issue", new Issue());
+    public String issueListPage(Model model) {
+        model.addAttribute("issue", new Issue());
 
         List<Issue> issueList = issueService.findAll();
-        mav.addObject("issueList", issueList);
+        model.addAttribute("issueList", issueList);
 
-        injectAllData(mav);
+        injectAllData(model);
 
-        return mav;
+        return PAGE_LIST;
     }
 
     @GetMapping("/create/{projectId}/{typeId}")
-    public ModelAndView createIssuePageByProjectAndType(@PathVariable Integer projectId, @PathVariable Integer typeId) {
-        ModelAndView mav = new ModelAndView(PAGE_CREATE);
+    public String createIssuePageByProjectAndType(@PathVariable Integer projectId, @PathVariable Integer typeId,
+            Model model) {
 
         Issue issue = new Issue();
         try {
@@ -91,17 +92,17 @@ public class IssueController {
             issue.setType(issueTypeService.findById(typeId));
         } catch (IssueTypeNotFound e) {
         }
-        mav.addObject("issue", issue);
+        model.addAttribute("issue", issue);
 
-        injectAllData(mav);
+        injectAllData(model);
+        injectIssueTree(model, issue);
 
-        return mav;
+        return PAGE_CREATE;
     }
 
     @GetMapping("/create/{projectId}/{typeId}/{parentId}")
-    public ModelAndView createSubIssuePageByProjectAndType(@PathVariable Integer projectId,
-            @PathVariable Integer typeId, @PathVariable Integer parentId) {
-        ModelAndView mav = new ModelAndView(PAGE_CREATE);
+    public String createSubIssuePageByProjectAndType(@PathVariable Integer projectId, @PathVariable Integer typeId,
+            @PathVariable Integer parentId, Model model) {
 
         Issue issue = new Issue();
         try {
@@ -116,21 +117,21 @@ public class IssueController {
             issue.setParent(issueService.findById(parentId));
         } catch (IssueNotFound e) {
         }
-        mav.addObject("issue", issue);
+        model.addAttribute("issue", issue);
 
-        injectAllData(mav);
+        injectAllData(model);
+        injectIssueTree(model, issue);
 
-        return mav;
+        return PAGE_CREATE;
     }
 
     @PostMapping("/create")
-    public ModelAndView createNewIssue(@ModelAttribute @Valid Issue issue, BindingResult result,
+    public String createNewIssue(@ModelAttribute @Valid Issue issue, BindingResult result,
             final RedirectAttributes redirectAttributes) {
 
-        ModelAndView mav = new ModelAndView(REDIRECT_PROJECT);
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", result.getAllErrors());
-            return mav;
+            return REDIRECT_PAGE_ISSUE;
         }
 
         String message = null;
@@ -150,12 +151,11 @@ public class IssueController {
         redirectAttributes.addFlashAttribute("message", message);
         redirectAttributes.addFlashAttribute("name", issue.getName());
 
-        return mav;
+        return REDIRECT_PAGE_ISSUE;
     }
 
     @GetMapping("/delete/{id}")
-    public ModelAndView deleteIssue(@PathVariable Integer id, final RedirectAttributes redirectAttributes) {
-        ModelAndView mav = new ModelAndView(REDIRECT_PROJECT);
+    public String deleteIssue(@PathVariable Integer id, final RedirectAttributes redirectAttributes) {
         String error = null;
         String message = null;
         try {
@@ -167,43 +167,44 @@ public class IssueController {
 
         redirectAttributes.addFlashAttribute("error", error);
         redirectAttributes.addFlashAttribute("message", message);
-        return mav;
+        return REDIRECT_PAGE_ISSUE;
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView editIssuePage(@PathVariable Integer id) {
+    public String editIssuePage(@PathVariable Integer id, Model model) {
         try {
-            ModelAndView mav = new ModelAndView(PAGE_EDIT);
-
             Issue issue = issueService.findById(id);
-            mav.addObject("issue", issue);
+            model.addAttribute("issue", issue);
 
-            injectAllData(mav);
+            injectAllData(model);
+            injectIssueTree(model, issue);
 
-            return mav;
+            return PAGE_EDIT;
         } catch (IssueNotFound e) {
-            ModelAndView mav = new ModelAndView(PAGE_LIST);
-            mav.addObject("error", e.getMessage());
-            return mav;
+            model.addAttribute("error", e.getMessage());
+            return REDIRECT_PAGE_ISSUE;
         }
     }
 
     @PostMapping("/save/{id}")
-    public ModelAndView saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, @PathVariable Integer id,
-            final RedirectAttributes redirectAttributes) {
+    public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, @PathVariable Integer id,
+            Model model, final RedirectAttributes redirectAttributes) {
 
-        ModelAndView mav = new ModelAndView(REDIRECT_PROJECT);
         if (result.hasErrors()) {
-            mav.addObject("errors", result.getAllErrors());
-            return mav;
+            model.addAttribute("errors", result.getAllErrors());
+            return REDIRECT_PAGE_ISSUE;
         }
 
         String message = null;
         String error = null;
         try {
-            // TODO Clarify, maybe there is another way to do it?
+            // TODO Clarify, maybe there is another way to set parent to null?
             if (rootIssue.getId().equals(issue.getParent().getId())) {
                 issue.setParent(null);
+            }
+            if (issue.getId().equals(issue.getParent().getId())) {
+                Issue storedIssue = issueService.findById(id);
+                issue.setParent(storedIssue.getParent());
             }
             issueService.update(issue);
             message = "Issue \"" + issue.getId() + ": " + issue.getName() + "\" has been updated.";
@@ -215,24 +216,47 @@ public class IssueController {
         redirectAttributes.addFlashAttribute("message", message);
         redirectAttributes.addFlashAttribute("name", issue.getName());
 
-        return mav;
+        return REDIRECT_PAGE_ISSUE;
     }
 
-    private void injectAllData(ModelAndView mav) {
-        List<Issue> issues = issueService.findAll();
-        issues.add(0, rootIssue);
-        mav.addObject("issues", issues);
+    private void injectIssueTree(Model model, Issue issue) {
+        Integer projectId = issue.getProject().getId();
+        Integer typeId = issue.getType().getId();
 
+        List<Issue> issues = issueService.findRootIssues(projectId, typeId);
+        issues = processIssueBranchRecursively(issues, issue);
+        rootIssue.setChilds(issues);
+        model.addAttribute("rootIssues", Collections.singletonList(rootIssue));
+    }
+
+    private List<Issue> processIssueBranchRecursively(List<Issue> issues, Issue issue) {
+        Collections.sort(issues, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+        removeIssueFromList(issues, issue);
+        issues.forEach(i -> processIssueBranchRecursively(i.getChilds(), issue));
+        return issues;
+    }
+
+    private void removeIssueFromList(List<Issue> issues, Issue issue) {
+        Iterator<Issue> iterator = issues.iterator();
+        while (iterator.hasNext()) {
+            Issue current = iterator.next();
+            if (current.getId().equals(issue.getId())) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private void injectAllData(Model model) {
         List<Project> projects = projectService.findAll();
-        mav.addObject("projects", projects);
+        model.addAttribute("projects", projects);
 
         List<IssueType> issueTypes = issueTypeService.findAll();
-        mav.addObject("issueTypes", issueTypes);
+        model.addAttribute("issueTypes", issueTypes);
 
         List<IssueStatus> issueStatuses = issueStatusService.findAll();
-        mav.addObject("issueStatuses", issueStatuses);
+        model.addAttribute("issueStatuses", issueStatuses);
 
         List<IssuePriority> issuePriorities = issuePriorityService.findAll();
-        mav.addObject("issuePriorities", issuePriorities);
+        model.addAttribute("issuePriorities", issuePriorities);
     }
 }

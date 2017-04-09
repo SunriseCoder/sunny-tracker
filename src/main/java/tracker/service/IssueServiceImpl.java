@@ -18,17 +18,17 @@ import tracker.exception.IssueNotFound;
 public class IssueServiceImpl implements IssueService {
     @Autowired
     private IssueRepository repository;
-    private Sort sort;
+    private Sort sortStatusPriority;
 
     public IssueServiceImpl() {
-        sort = new Sort(new Order(Direction.ASC, "status.issuePosition"),
+        sortStatusPriority = new Sort(new Order(Direction.ASC, "status.issuePosition"),
                 new Order(Direction.ASC, "priority.issuePosition"));
     }
 
     @Override
     @Transactional
     public List<Issue> findAll() {
-        return repository.findAll(sort);
+        return repository.findAll(sortStatusPriority);
     }
 
     @Override
@@ -79,9 +79,8 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    @Transactional
-    public List<Issue> findRootIssues(Integer projectId, Integer issueTypeId) {
-        return repository.findByParentAndProjectIdAndTypeId(null, projectId, issueTypeId, sort);
+    public List<Issue> findRootIssues(Integer projectId, Integer typeId) {
+        return repository.findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(projectId, typeId);
     }
 
     private void inheritParentValues(Issue issue) throws IssueNotFound {

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                            http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>custom</short-name>
+
+    <tag>
+        <name>recursive-options</name>
+        <tag-class>org.springframework.web.servlet.tags.form.RecursiveOptionsTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>rootItems</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>propertyOfChildren</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>itemValue</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>itemLabelExpression</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>indentString</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+</taglib>
