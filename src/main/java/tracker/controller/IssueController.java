@@ -3,6 +3,7 @@ package tracker.controller;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import tracker.entity.Issue;
 import tracker.entity.IssuePriority;
@@ -36,11 +36,10 @@ import tracker.validation.IssueValidator;
 @Controller
 @RequestMapping("/issue")
 public class IssueController {
-    private static final String REDIRECT_PAGE_HOME = "redirect:/";
-    private static final String REDIRECT_PAGE_ISSUE = "redirect:/issue";
     private static final String PAGE_LIST = "issue/list";
     private static final String PAGE_CREATE = "issue/create";
     private static final String PAGE_EDIT = "issue/edit";
+    private static final String PAGE_RESULT = "issue/result";
 
     @Autowired
     private IssueService issueService;
@@ -81,14 +80,14 @@ public class IssueController {
     }
 
     @GetMapping("/create/{projectId}/{typeId}")
-    public String createIssuePageByProjectAndType(@PathVariable Integer projectId, @PathVariable Integer typeId,
-            Model model) {
-
+    public String createRootIssuePage(@PathVariable Integer projectId, @PathVariable Integer typeId, Model model) {
         Issue issue = new Issue();
+
         try {
             issue.setProject(projectService.findById(projectId));
         } catch (ProjectNotFound e) {
         }
+
         try {
             issue.setType(issueTypeService.findById(typeId));
         } catch (IssueTypeNotFound e) {
@@ -127,12 +126,10 @@ public class IssueController {
     }
 
     @PostMapping("/create")
-    public String createNewIssue(@ModelAttribute @Valid Issue issue, BindingResult result,
-            final RedirectAttributes redirectAttributes) {
-
+    public String createNewIssue(@ModelAttribute @Valid Issue issue, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("errors", result.getAllErrors());
-            return REDIRECT_PAGE_ISSUE;
+            model.addAttribute("errors", result.getAllErrors());
+            return PAGE_RESULT;
         }
 
         String message = null;
@@ -148,15 +145,15 @@ public class IssueController {
             error = "An error occured, " + e.getMessage();
         }
 
-        redirectAttributes.addFlashAttribute("error", error);
-        redirectAttributes.addFlashAttribute("message", message);
-        redirectAttributes.addFlashAttribute("name", issue.getName());
+        model.addAttribute("error", error);
+        model.addAttribute("message", message);
+        model.addAttribute("name", issue.getName());
 
-        return REDIRECT_PAGE_HOME;
+        return PAGE_RESULT;
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteIssue(@PathVariable Integer id, final RedirectAttributes redirectAttributes) {
+    public String deleteIssue(@PathVariable Integer id, Model model) {
         String error = null;
         String message = null;
         try {
@@ -166,9 +163,9 @@ public class IssueController {
             error = "An error occured, " + e.getMessage();
         }
 
-        redirectAttributes.addFlashAttribute("error", error);
-        redirectAttributes.addFlashAttribute("message", message);
-        return REDIRECT_PAGE_ISSUE;
+        model.addAttribute("error", error);
+        model.addAttribute("message", message);
+        return PAGE_RESULT;
     }
 
     @GetMapping("/edit/{id}")
@@ -183,17 +180,16 @@ public class IssueController {
             return PAGE_EDIT;
         } catch (IssueNotFound e) {
             model.addAttribute("error", e.getMessage());
-            return REDIRECT_PAGE_ISSUE;
+            return PAGE_RESULT;
         }
     }
 
     @PostMapping("/save/{id}")
-    public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, @PathVariable Integer id,
-            Model model, final RedirectAttributes redirectAttributes) {
+    public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, @PathVariable Integer id, Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
-            return REDIRECT_PAGE_ISSUE;
+            return PAGE_RESULT;
         }
 
         String message = null;
@@ -211,15 +207,14 @@ public class IssueController {
             message = "Issue \"" + issue.getId() + ": " + issue.getName() + "\" has been updated.";
         } catch (Exception e) {
             error = "An error occured, " + e.getMessage();
-            redirectAttributes.addFlashAttribute("error", error);
-            return REDIRECT_PAGE_ISSUE;
+            model.addAttribute("error", error);
+            return PAGE_RESULT;
         }
 
-        redirectAttributes.addFlashAttribute("error", error);
-        redirectAttributes.addFlashAttribute("message", message);
-        redirectAttributes.addFlashAttribute("name", issue.getName());
+        model.addAttribute("error", error);
+        model.addAttribute("message", message);
 
-        return REDIRECT_PAGE_HOME;
+        return PAGE_RESULT;
     }
 
     private void injectIssueTree(Model model, Issue issue) {
