@@ -10,29 +10,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
     <title>Sunny Tracker</title>
+
+    <link rel="stylesheet" href="/styles/dashboard.css" />
+
     <script src="/scripts/frame-utils.js"></script>
     <script src="/scripts/issue-utils.js"></script>
     <script src="/scripts/jquery.js"></script>
-    <style>
-        div           {display: inline-block; border-color: #cccccc; padding: 1px}
-        div.table     {background-color: #eeeeee; width: 80%; border-style: solid; border-width: 1px}
-        div.project   {background-color: #bbbbff; color: #ffffff; margin-left: 20px; padding-left: 5px; width: 100%; border-style: solid; border-width: 1px}
-        div.issuetype {background-color: #bbffbb; color: #ffffff; margin-left: 40px; padding-left: 5px; width: 100%; border-style: solid; border-width: 1px}
-        div.issue     {background-color: #ffffff; color: #000000; padding-left: 5px; width: 100%; border-style: solid; border-width: 1px}
-        
-        div.id        {float: left; width: 3%; text-align: right; padding-right: 3px; background-color: inherit;}
-        div.name      {float: left; width: 80%; padding-left: 3px; background-color: inherit;}
-        div.status    {float: left; width: 7%; text-align: left; padding-right: 3px; background-color: inherit;}
-        div.priority  {float: left; width: 7%; text-align: left; padding-right: 3px; background-color: inherit;}
-        
-        div.new       {background-color: #ddddff}
-        div.active    {background-color: #ffdddd}
-        div.closed    {background-color: #ddffdd}
-        
-        div.high      {background-color: #ff8080}
-        div.medium    {background-color: #80ff80}
-        div.low       {background-color: #8080ff}
-    </style>
 </head>
 <body>
 

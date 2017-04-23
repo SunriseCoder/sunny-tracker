@@ -115,8 +115,8 @@ public class Issue {
 
     @Override
     public String toString() {
-        return String.format("Issue{id: %s, name: %s, project: %s, type: %s, status: %s, priority: %s, position-by-status: %s, position-by-priority: %s}",
-                id, name, project != null ? project.getName() : null, type != null ? type.getName() : null, status != null ? status.getName() : null,
+        return String.format("Issue{id: %s, name: %s, description: %s, project: %s, type: %s, status: %s, priority: %s, position-by-status: %s, position-by-priority: %s}",
+                id, name, description, project != null ? project.getName() : null, type != null ? type.getName() : null, status != null ? status.getName() : null,
                 priority != null ? priority.getName() : null, status != null ? status.getIssuePosition() : null, priority != null ? priority.getIssuePosition() : null);
     }
 }

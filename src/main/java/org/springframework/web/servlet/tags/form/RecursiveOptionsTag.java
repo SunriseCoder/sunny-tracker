@@ -38,6 +38,10 @@ public class RecursiveOptionsTag extends OptionsTag {
     }
 
     private void processRecursively(TagWriter tagWriter, Object items, int indent) throws JspException {
+        if (items == null) {
+            return;
+        }
+
         try {
             for (Object item : (Iterable<?>) items) {
                 renderItem(tagWriter, item, indent);

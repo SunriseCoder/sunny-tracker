@@ -1,7 +1,6 @@
 package tracker.controller;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -37,9 +36,7 @@ import tracker.validation.IssueValidator;
 @RequestMapping("/issue")
 public class IssueController {
     private static final String PAGE_LIST = "issue/list";
-    private static final String PAGE_CREATE = "issue/create";
     private static final String PAGE_EDIT = "issue/edit";
-    private static final String PAGE_RESULT = "issue/result";
 
     @Autowired
     private IssueService issueService;
@@ -97,7 +94,7 @@ public class IssueController {
         injectAllData(model);
         injectIssueTree(model, issue);
 
-        return PAGE_CREATE;
+        return PAGE_EDIT;
     }
 
     @GetMapping("/create/{projectId}/{typeId}/{parentId}")
@@ -122,34 +119,35 @@ public class IssueController {
         injectAllData(model);
         injectIssueTree(model, issue);
 
-        return PAGE_CREATE;
+        return PAGE_EDIT;
     }
 
-    @PostMapping("/create")
-    public String createNewIssue(@ModelAttribute @Valid Issue issue, BindingResult result, Model model) {
+    @PostMapping("/save")
+    public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, Model model) {
+
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
-            return PAGE_RESULT;
+            return PAGE_EDIT;
         }
 
         String message = null;
         String error = null;
         try {
-            // TODO Clarify, maybe there is another way to do it?
-            if (rootIssue.getId().equals(issue.getParent().getId())) {
-                issue.setParent(null);
-            }
-            issueService.create(issue);
-            message = "New Issue \"" + issue.getName() + "\" has been created.";
+            issue = issueService.update(issue);
+            message = "Issue \"" + issue.getId() + ": " + issue.getName() + "\" has been saved.";
         } catch (Exception e) {
             error = "An error occured, " + e.getMessage();
         }
 
         model.addAttribute("error", error);
         model.addAttribute("message", message);
-        model.addAttribute("name", issue.getName());
 
-        return PAGE_RESULT;
+        model.addAttribute("issue", issue);
+
+        injectAllData(model);
+        injectIssueTree(model, issue);
+
+        return PAGE_EDIT;
     }
 
     @GetMapping("/delete/{id}")
@@ -165,7 +163,7 @@ public class IssueController {
 
         model.addAttribute("error", error);
         model.addAttribute("message", message);
-        return PAGE_RESULT;
+        return PAGE_LIST;
     }
 
     @GetMapping("/edit/{id}")
@@ -180,41 +178,8 @@ public class IssueController {
             return PAGE_EDIT;
         } catch (IssueNotFound e) {
             model.addAttribute("error", e.getMessage());
-            return PAGE_RESULT;
+            return PAGE_EDIT;
         }
-    }
-
-    @PostMapping("/save/{id}")
-    public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, @PathVariable Integer id, Model model) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
-            return PAGE_RESULT;
-        }
-
-        String message = null;
-        String error = null;
-        try {
-            // TODO Clarify, maybe there is another way to set parent to null?
-            if (rootIssue.getId().equals(issue.getParent().getId())) {
-                issue.setParent(null);
-            }
-            if (issue.getParent() != null && issue.getId().equals(issue.getParent().getId())) {
-                Issue storedIssue = issueService.findById(id);
-                issue.setParent(storedIssue.getParent());
-            }
-            issueService.update(issue);
-            message = "Issue \"" + issue.getId() + ": " + issue.getName() + "\" has been updated.";
-        } catch (Exception e) {
-            error = "An error occured, " + e.getMessage();
-            model.addAttribute("error", error);
-            return PAGE_RESULT;
-        }
-
-        model.addAttribute("error", error);
-        model.addAttribute("message", message);
-
-        return PAGE_RESULT;
     }
 
     private void injectIssueTree(Model model, Issue issue) {
@@ -229,19 +194,12 @@ public class IssueController {
 
     private List<Issue> processIssueBranchRecursively(List<Issue> issues, Issue issue) {
         Collections.sort(issues, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
-        removeIssueFromList(issues, issue);
-        issues.forEach(i -> processIssueBranchRecursively(i.getChilds(), issue));
-        return issues;
-    }
-
-    private void removeIssueFromList(List<Issue> issues, Issue issue) {
-        Iterator<Issue> iterator = issues.iterator();
-        while (iterator.hasNext()) {
-            Issue current = iterator.next();
-            if (current.getId().equals(issue.getId())) {
-                iterator.remove();
+        issues.forEach(i -> {
+            if (i.getChilds() != null) {
+                processIssueBranchRecursively(i.getChilds(), issue);
             }
-        }
+        });
+        return issues;
     }
 
     private void injectAllData(Model model) {

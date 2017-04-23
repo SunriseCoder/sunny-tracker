@@ -33,14 +33,6 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     @Transactional
-    public Issue create(Issue issue) throws IssueNotFound {
-        inheritParentValues(issue);
-        updateChangedTime(issue);
-        return repository.save(issue);
-    }
-
-    @Override
-    @Transactional
     public Issue findById(int id) throws IssueNotFound {
         Issue issue = repository.findOne(id);
         if (issue == null) {
@@ -52,19 +44,30 @@ public class IssueServiceImpl implements IssueService {
     @Override
     @Transactional(rollbackFor = IssueNotFound.class)
     public Issue update(Issue issue) throws IssueNotFound {
-        if (issue == null || issue.getId() == null) {
-            throw new IssueNotFound();
+        if (issue == null) {
+            throw new IllegalArgumentException("Issue is null");
         }
 
-        Issue storedIssue = repository.findOne(issue.getId());
-        if (storedIssue == null) {
-            throw new IssueNotFound();
+        if (issue.getParent() != null && issue.getParent().getId() == 0) {
+            issue.setParent(null);
         }
 
-        copyAllFields(storedIssue, issue);
-        inheritParentValues(storedIssue);
-        updateChangedTime(storedIssue);
-        return storedIssue;
+        if (issue.getId() != null && issue.getId() != 0) {
+            Issue storedIssue = repository.findOne(issue.getId());
+
+            if (storedIssue == null) {
+                throw new IssueNotFound();
+            }
+
+            checkParentIsNotAChild(storedIssue, issue.getParent());
+        }
+
+        inheritParentValues(issue);
+        updateChangedTime(issue);
+
+        issue = repository.save(issue);
+
+        return issue;
     }
 
     @Override
@@ -83,6 +86,31 @@ public class IssueServiceImpl implements IssueService {
         return repository.findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(projectId, typeId);
     }
 
+    private void checkParentIsNotAChild(Issue issue, Issue parent) {
+        if (parent == null) {
+            return;
+        }
+
+        if (issue.getId().equals(parent.getId())) {
+            throw new IllegalArgumentException("Issue's parent refers to the issue itself");
+        }
+
+        checkParentIsNotAChildRecursively(issue, parent);
+    }
+
+    private void checkParentIsNotAChildRecursively(Issue issue, Issue parent) {
+        if (issue.getChilds() == null) {
+            return;
+        }
+
+        for (Issue child : issue.getChilds()) {
+            if (parent.getId().equals(child.getId())) {
+                throw new IllegalArgumentException("Issue's parent refers to one of the issue's childs");
+            }
+            checkParentIsNotAChildRecursively(child, parent);
+        }
+    }
+
     private void inheritParentValues(Issue issue) throws IssueNotFound {
         Issue parent = issue.getParent();
         if (parent != null) {
@@ -94,17 +122,6 @@ public class IssueServiceImpl implements IssueService {
                 throw new IssueNotFound("Parent Issue with id = " + parent.getId() + " was not found", e);
             }
         }
-    }
-
-    private void copyAllFields(Issue currentIssue, Issue newIssue) {
-        // TODO Take a close look
-        currentIssue.setName(newIssue.getName());
-        currentIssue.setDescription(newIssue.getDescription());
-        currentIssue.setParent(newIssue.getParent());
-        currentIssue.setType(newIssue.getType());
-        currentIssue.setProject(newIssue.getProject());
-        currentIssue.setStatus(newIssue.getStatus());
-        currentIssue.setPriority(newIssue.getPriority());
     }
 
     private void updateChangedTime(Issue issue) {
