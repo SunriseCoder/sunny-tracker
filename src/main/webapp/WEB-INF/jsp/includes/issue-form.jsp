@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td>Description:</td>
-                <td><form:textarea path="description" rows="10" cols="50" /></td>
+                <td><form:textarea path="description" rows="7" cols="50" /></td>
                 <td><form:errors path="description" cssStyle="color: red;" /></td>
             </tr>
             <tr>

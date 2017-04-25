@@ -2,12 +2,12 @@
     width: 800px;
 }
 
-#toolFrame {
+div.toolFrame {
+    display: flex;
+    flex-direction: column;
     width: 500px;
-    height: 500px;
     position: fixed;
     right: 10px;
-    top: 50px;
 }
 
 div {

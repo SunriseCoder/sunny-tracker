@@ -15,7 +15,7 @@ IssueUtils = {
     },
 
     _setUrl: function(url) {
-        var frame = $(parent.document).find('#toolFrame')[0];
+        var frame = FrameUtils.getActiveFrame(parent.document);
         frame.src = url;
     },
 
