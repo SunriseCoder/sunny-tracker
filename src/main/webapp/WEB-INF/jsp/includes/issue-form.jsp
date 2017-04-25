@@ -38,17 +38,29 @@
             </tr>
             <tr>
                 <td>Type:</td>
-                <td><form:select path="type.id" items="${issueTypes}" itemLabel="name" multiple="false" itemValue="id" /></td>
+                <td>
+                    <span id="type.id">
+                        <form:radiobuttons path="type.id" items="${issueTypes}" itemLabel="name" itemValue="id" />
+                    </span>
+                </td>
                 <td><form:errors path="type.id" cssStyle="color: red;" /></td>
             </tr>
             <tr>
                 <td>Status:</td>
-                <td><form:select path="status.id" items="${issueStatuses}" itemLabel="name" multiple="false" itemValue="id" /></td>
+                <td>
+                    <span id="status.id">
+                        <form:radiobuttons path="status.id" items="${issueStatuses}" itemLabel="name" itemValue="id" />
+                    </span>
+                </td>
                 <td><form:errors path="status.id" cssStyle="color: red;" /></td>
             </tr>
             <tr>
                 <td>Priority:</td>
-                <td><form:select path="priority.id" items="${issuePriorities}" itemLabel="name" multiple="false" itemValue="id" /></td>
+                <td>
+                    <span id="priority.id">
+                        <form:radiobuttons path="priority.id" items="${issuePriorities}" itemLabel="name" itemValue="id" />
+                    </span>
+                </td>
                 <td><form:errors path="priority.id" cssStyle="color: red;" /></td>
             </tr>
         </tbody>
