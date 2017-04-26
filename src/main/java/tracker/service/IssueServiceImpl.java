@@ -105,7 +105,7 @@ public class IssueServiceImpl implements IssueService {
 
         for (Issue child : issue.getChilds()) {
             if (parent.getId().equals(child.getId())) {
-                throw new IllegalArgumentException("Issue's parent refers to one of the issue's childs");
+                throw new IllegalArgumentException("Issue's parent refers to one of the its child");
             }
             checkParentIsNotAChildRecursively(child, parent);
         }
