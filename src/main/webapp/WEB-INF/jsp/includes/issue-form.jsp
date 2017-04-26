@@ -3,7 +3,9 @@
 
 <%@ taglib uri="/WEB-INF/tld/custom.tld" prefix="custom" %>
 
-<form:form id="issueForm" method="POST" commandName="issue" action="/issue/save">
+<c:set var="appRoot" value="${pageContext.request.contextPath}" />
+
+<form:form id="issueForm" method="POST" commandName="issue" action="${appRoot}/issue/save">
     <table>
         <tbody>
             <tr>

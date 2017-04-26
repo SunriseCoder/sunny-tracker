@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 
+<c:set var="appRoot" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,7 +14,7 @@
 </head>
 <body>
 	<h1>Issue List</h1>
-	<a href="${pageContext.request.contextPath}/">Home</a><br />
+	<a href="${appRoot}/">Home</a><br />
 
 	<c:if test="${not empty errors}">
 		<c:out value="Following errors has been occured due to creation issue ${name}:" />
@@ -53,16 +55,16 @@
 					<td>${issue.priority.name}</td>
 					<td>${issue.project.name}</td>
 					<td>
-						<a href="${pageContext.request.contextPath}/issue/edit/${issue.id}.html">Edit</a><br />
-						<a href="${pageContext.request.contextPath}/issue/delete/${issue.id}.html">Delete</a>
+						<a href="${appRoot}/issue/edit/${issue.id}.html">Edit</a><br />
+						<a href="${appRoot}/issue/delete/${issue.id}.html">Delete</a>
 					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="${pageContext.request.contextPath}/">Home</a>
+	<a href="${appRoot}/">Home</a>
 	<h1>Create new Issue</h1>
-	<form:form method="POST" commandName="issue" action="${pageContext.request.contextPath}/issue/create">
+	<form:form method="POST" commandName="issue" action="${appRoot}/issue/create">
 		Name: <form:input path="name" /><form:errors path="name" cssStyle="color: red;" /><br />
 		Description: <form:input path="description" /><form:errors path="description" cssStyle="color: red;" /><br />
 		Parent issue: <form:select path="parent.id" items="${issues}" itemLabel="name" multiple="false" itemValue="id" /><form:errors path="parent.id" cssStyle="color: red;" /><br />

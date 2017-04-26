@@ -5,13 +5,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<c:forEach var="issue" items="${items}"    varStatus="count">
+<c:set var="appRoot" value="${pageContext.request.contextPath}" />
+
+<c:forEach var="issue" items="${items}" varStatus="count">
     <div class="issue ${fn:toLowerCase(issue.status.name)}" style="margin-left: ${indent}px">
         <div class="id">${issue.id}</div>
         <div class="name">
-            <a href="#" onclick="IssueUtils.showIssue(${issue.id})">${issue.name}</a>
+            <!-- Edit Issue -->
+            <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/edit/${issue.id}.html')">${issue.name}</a>
             <c:if test="${not issue.status.name.equals('Closed')}">
-                 &nbsp;&nbsp;&nbsp; <a href="#"  onclick="IssueUtils.createSubIssue(${issue.project.id},${issue.type.id},${issue.id});">(+)</a>
+                <!-- Create Sub-Issue -->
+                 &nbsp;&nbsp;&nbsp; <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${issue.project.id}/${issue.type.id}/${issue.id}');">(+)</a>
             </c:if>
         </div>
         <div class="status">${issue.status.name}</div>

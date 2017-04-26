@@ -19,5 +19,10 @@ FrameUtils = {
             var frame = frames[i];
             frame.selected = frame.id == id;
         }
+    },
+
+    showUrl: function(url) {
+        var frame = FrameUtils.getActiveFrame(parent.document);
+        frame.src = url;
     }
 }
