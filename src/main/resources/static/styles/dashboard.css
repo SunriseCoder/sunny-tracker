@@ -1,11 +1,11 @@
 #dashboardFrame {
-    width: 800px;
+    width: 1000px;
 }
 
 div.toolFrame {
     display: flex;
     flex-direction: column;
-    width: 500px;
+    width: 800px;
     position: fixed;
     right: 10px;
 }

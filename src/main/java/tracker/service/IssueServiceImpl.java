@@ -36,7 +36,7 @@ public class IssueServiceImpl implements IssueService {
     public Issue findById(int id) throws IssueNotFound {
         Issue issue = repository.findOne(id);
         if (issue == null) {
-            throw new IssueNotFound();
+            throw new IssueNotFound(id);
         }
         return issue;
     }
@@ -56,7 +56,7 @@ public class IssueServiceImpl implements IssueService {
             Issue storedIssue = repository.findOne(issue.getId());
 
             if (storedIssue == null) {
-                throw new IssueNotFound();
+                throw new IssueNotFound(issue.getId());
             }
 
             checkParentIsNotAChild(storedIssue, issue.getParent());
@@ -75,7 +75,7 @@ public class IssueServiceImpl implements IssueService {
     public Issue delete(int id) throws IssueNotFound {
         Issue deletedIssue = repository.findOne(id);
         if (deletedIssue == null) {
-            throw new IssueNotFound();
+            throw new IssueNotFound(id);
         }
         repository.delete(id);
         return deletedIssue;
@@ -119,7 +119,7 @@ public class IssueServiceImpl implements IssueService {
                 issue.setType(savedParent.getType());
                 issue.setProject(savedParent.getProject());
             } catch (IssueNotFound e) {
-                throw new IssueNotFound("Parent Issue with id = " + parent.getId() + " was not found", e);
+                throw new IssueNotFound(parent.getId(), "Parent Issue with ID {0} was not found");
             }
         }
     }

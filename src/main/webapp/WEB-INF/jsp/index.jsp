@@ -15,7 +15,7 @@
 
     <script>
         function pageLoaded() {
-            document.getElementById('radio1').click();
+            document.getElementById('radioToolFrame1').click();
         }
     </script>
 </head>
@@ -25,12 +25,18 @@
     <iframe id="dashboardFrame" src="dashboard" frameborder="0" height="100%" scrolling="no" onload="FrameUtils.resizeHeight(this);"></iframe>
 
     <div class="toolFrame" style="top: 0px;">
-        <div><input id="radio1" type="radio" name="frame" onclick="FrameUtils.setActiveFrame('toolFrame1');" />Frame 1</div>
+        <span>
+            <input id="radioToolFrame1" type="radio" name="frame" onclick="FrameUtils.setActiveFrame('toolFrame1');" />
+            <label for="radioToolFrame1">Tool Frame 1</label>
+        </span>
         <iframe id="toolFrame1" frameborder="0" onload="FrameUtils.resizeHeight(this);"></iframe>
     </div>
 
     <div class="toolFrame" style="top: 480px;">
-        <div><input id="radio2" type="radio" name="frame" onclick="FrameUtils.setActiveFrame('toolFrame2');" />Frame 2</div>
+        <span>
+            <input id="radioToolFrame2" type="radio" name="frame" onclick="FrameUtils.setActiveFrame('toolFrame2');" />
+            <label for="radioToolFrame2">Tool Frame 2</label>
+        </span>
         <iframe id="toolFrame2" frameborder="0" onload="FrameUtils.resizeHeight(this);"></iframe>
     </div>
 </body>

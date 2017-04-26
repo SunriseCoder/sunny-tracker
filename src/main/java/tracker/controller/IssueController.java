@@ -1,5 +1,6 @@
 package tracker.controller;
 
+import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -134,9 +135,11 @@ public class IssueController {
         String error = null;
         try {
             issue = issueService.update(issue);
-            message = "Issue \"" + issue.getId() + ": " + issue.getName() + "\" has been saved.";
+            message = MessageFormat.format("Issue [{0}: {1}] has been saved.", issue.getId(), issue.getName());
+        } catch (IssueNotFound e) {
+            error = e.getMessage();
         } catch (Exception e) {
-            error = "An error occured, " + e.getMessage();
+            error = "An error occured: " + e.getMessage();
         }
 
         model.addAttribute("error", error);
