@@ -20,7 +20,7 @@
     </script>
 </head>
 <body onload="pageLoaded();">
-    <jsp:include page="header.jsp" />
+    <jsp:include page="includes/header.jsp" />
 
     <iframe id="dashboardFrame" src="dashboard" frameborder="0" height="100%" scrolling="no" onload="FrameUtils.resizeHeight(this);"></iframe>
 
