@@ -14,6 +14,7 @@ public interface IssueStatusService {
     public IssueStatus create(IssueStatus issueStatus);
 
     public IssueStatus findById(int id) throws IssueStatusNotFound;
+    public IssueStatus findSelected() throws IssueStatusNotFound;
 
     public IssueStatus update(IssueStatus issueStatus) throws IssueStatusNotFound;
 

@@ -14,6 +14,7 @@ public interface IssuePriorityService {
     public IssuePriority create(IssuePriority issuePriority);
 
     public IssuePriority findById(int id) throws IssuePriorityNotFound;
+    public IssuePriority findSelected() throws IssuePriorityNotFound;
 
     public IssuePriority update(IssuePriority issuePriority) throws IssuePriorityNotFound;
 

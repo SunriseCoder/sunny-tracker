@@ -46,21 +46,43 @@ public class IssuePriorityServiceImpl implements IssuePriorityService {
     }
 
     @Override
+    public IssuePriority findSelected() throws IssuePriorityNotFound {
+        List<IssuePriority> selected = repository.findBySelectedTrue();
+
+        if (selected.size() != 1) {
+            throw new IssuePriorityNotFound();
+        }
+
+        return selected.get(0);
+    }
+
+    @Override
     @Transactional(rollbackFor = IssuePriorityNotFound.class)
-    public IssuePriority update(IssuePriority issuePriority) throws IssuePriorityNotFound {
-        if (issuePriority == null || issuePriority.getId() == null) {
+    public IssuePriority update(IssuePriority update) throws IssuePriorityNotFound {
+        if (update == null || update.getId() == null) {
             throw new IssuePriorityNotFound();
         }
 
-        IssuePriority updatedIssuePriority = repository.findOne(issuePriority.getId());
-        if (updatedIssuePriority == null) {
+        IssuePriority storedIssuePriority = repository.findOne(update.getId());
+        if (storedIssuePriority == null) {
             throw new IssuePriorityNotFound();
         }
 
-        updatedIssuePriority.setName(issuePriority.getName());
-        updatedIssuePriority.setPosition(issuePriority.getPosition());
-        updatedIssuePriority.setIssuePosition(issuePriority.getIssuePosition());
-        return updatedIssuePriority;
+        storedIssuePriority.setName(update.getName());
+        storedIssuePriority.setPosition(update.getPosition());
+        storedIssuePriority.setIssuePosition(update.getIssuePosition());
+
+        // If current status is selected, resetting all other selected statuses
+        if (update.isSelected()) {
+            List<IssuePriority> selected = repository.findBySelectedTrue();
+            selected.forEach(element -> {
+                element.setSelected(false);
+                repository.save(element);
+            });
+            storedIssuePriority.setSelected(update.isSelected());
+        }
+
+        return storedIssuePriority;
     }
 
     @Override

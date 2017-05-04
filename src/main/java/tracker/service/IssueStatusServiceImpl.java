@@ -46,21 +46,43 @@ public class IssueStatusServiceImpl implements IssueStatusService {
     }
 
     @Override
+    public IssueStatus findSelected() throws IssueStatusNotFound {
+        List<IssueStatus> selected = repository.findBySelectedTrue();
+
+        if (selected.size() != 1) {
+            throw new IssueStatusNotFound();
+        }
+
+        return selected.get(0);
+    }
+
+    @Override
     @Transactional(rollbackFor = IssueStatusNotFound.class)
-    public IssueStatus update(IssueStatus issueStatus) throws IssueStatusNotFound {
-        if (issueStatus == null || issueStatus.getId() == null) {
+    public IssueStatus update(IssueStatus update) throws IssueStatusNotFound {
+        if (update == null || update.getId() == null) {
             throw new IssueStatusNotFound();
         }
 
-        IssueStatus updatedIssueStatus = repository.findOne(issueStatus.getId());
-        if (updatedIssueStatus == null) {
+        IssueStatus storedIssueStatus = repository.findOne(update.getId());
+        if (storedIssueStatus == null) {
             throw new IssueStatusNotFound();
         }
 
-        updatedIssueStatus.setName(issueStatus.getName());
-        updatedIssueStatus.setPosition(issueStatus.getPosition());
-        updatedIssueStatus.setIssuePosition(issueStatus.getIssuePosition());
-        return updatedIssueStatus;
+        storedIssueStatus.setName(update.getName());
+        storedIssueStatus.setPosition(update.getPosition());
+        storedIssueStatus.setIssuePosition(update.getIssuePosition());
+
+        // If current status is selected, resetting all other selected statuses
+        if (update.isSelected()) {
+            List<IssueStatus> selected = repository.findBySelectedTrue();
+            selected.forEach(element -> {
+                element.setSelected(false);
+                repository.save(element);
+            });
+            storedIssueStatus.setSelected(update.isSelected());
+        }
+
+        return storedIssueStatus;
     }
 
     @Override

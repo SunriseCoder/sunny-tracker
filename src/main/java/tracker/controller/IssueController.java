@@ -67,12 +67,13 @@ public class IssueController {
 
     @GetMapping("")
     public String issueListPage(Model model) {
-        model.addAttribute("issue", new Issue());
+        try {
+            injectAllData(model, new Issue());
+        } catch (Exception e) {
+        }
 
         List<Issue> issueList = issueService.findAll();
         model.addAttribute("issueList", issueList);
-
-        injectAllData(model);
 
         return PAGE_LIST;
     }
@@ -88,12 +89,10 @@ public class IssueController {
 
         try {
             issue.setType(issueTypeService.findById(typeId));
-        } catch (IssueTypeNotFound e) {
+            injectAllData(model, issue);
+            injectIssueTree(model, issue);
+        } catch (Exception e) {
         }
-        model.addAttribute("issue", issue);
-
-        injectAllData(model);
-        injectIssueTree(model, issue);
 
         return PAGE_EDIT;
     }
@@ -103,21 +102,27 @@ public class IssueController {
             @PathVariable Integer parentId, Model model) {
 
         Issue issue = new Issue();
+
         try {
             issue.setProject(projectService.findById(projectId));
         } catch (ProjectNotFound e) {
         }
+
         try {
             issue.setType(issueTypeService.findById(typeId));
         } catch (IssueTypeNotFound e) {
         }
+
         try {
             issue.setParent(issueService.findById(parentId));
         } catch (IssueNotFound e) {
         }
-        model.addAttribute("issue", issue);
 
-        injectAllData(model);
+        try {
+            injectAllData(model, issue);
+        } catch (Exception e) {
+        }
+
         injectIssueTree(model, issue);
 
         return PAGE_EDIT;
@@ -136,6 +141,9 @@ public class IssueController {
         try {
             issue = issueService.update(issue);
             message = MessageFormat.format("Issue [{0}: {1}] has been saved.", issue.getId(), issue.getName());
+
+            injectAllData(model, issue);
+            injectIssueTree(model, issue);
         } catch (IssueNotFound e) {
             error = e.getMessage();
         } catch (Exception e) {
@@ -144,11 +152,6 @@ public class IssueController {
 
         model.addAttribute("error", error);
         model.addAttribute("message", message);
-
-        model.addAttribute("issue", issue);
-
-        injectAllData(model);
-        injectIssueTree(model, issue);
 
         return PAGE_EDIT;
     }
@@ -173,16 +176,14 @@ public class IssueController {
     public String editIssuePage(@PathVariable Integer id, Model model) {
         try {
             Issue issue = issueService.findById(id);
-            model.addAttribute("issue", issue);
 
-            injectAllData(model);
+            injectAllData(model, issue);
             injectIssueTree(model, issue);
-
-            return PAGE_EDIT;
-        } catch (IssueNotFound e) {
+        } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            return PAGE_EDIT;
         }
+
+        return PAGE_EDIT;
     }
 
     private void injectIssueTree(Model model, Issue issue) {
@@ -205,7 +206,19 @@ public class IssueController {
         return issues;
     }
 
-    private void injectAllData(Model model) {
+    private void injectAllData(Model model, Issue issue) throws Exception {
+        if (issue.getStatus() == null) {
+            IssueStatus status = issueStatusService.findSelected();
+            issue.setStatus(status);
+        }
+
+        if (issue.getPriority() == null) {
+            IssuePriority priority = issuePriorityService.findSelected();
+            issue.setPriority(priority);
+        }
+
+        model.addAttribute("issue", issue);
+
         List<Project> projects = projectService.findAll();
         model.addAttribute("projects", projects);
 

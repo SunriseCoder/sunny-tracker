@@ -12,6 +12,7 @@ public class IssuePriority {
     private String name;
     private int position;
     private int issuePosition;
+    private Boolean selected;
 
     public Integer getId() {
         return id;
@@ -43,6 +44,14 @@ public class IssuePriority {
 
     public void setIssuePosition(int issuePosition) {
         this.issuePosition = issuePosition;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     @Override

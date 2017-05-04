@@ -91,22 +91,28 @@
             <column name="issue_position" type="int">
                 <constraints nullable="false" />
             </column>
+            <column name="selected" type="boolean">
+                <constraints nullable="false" />
+            </column>
         </createTable>
 
         <insert tableName="issue_statuses">
             <column name="name" value="New" />
             <column name="position" value="1" />
             <column name="issue_position" value="2" />
+            <column name="selected" valueBoolean="true" />
         </insert>
         <insert tableName="issue_statuses">
             <column name="name" value="Active" />
             <column name="position" value="2" />
             <column name="issue_position" value="1" />
+            <column name="selected" valueBoolean="false" />
         </insert>
         <insert tableName="issue_statuses">
             <column name="name" value="Closed" />
             <column name="position" value="3" />
             <column name="issue_position" value="3" />
+            <column name="selected" valueBoolean="false" />
         </insert>
 
         <addColumn tableName="issues">
@@ -137,22 +143,28 @@
             <column name="issue_position" type="int">
                 <constraints nullable="false" />
             </column>
+            <column name="selected" type="boolean">
+                <constraints nullable="false" />
+            </column>
         </createTable>
 
         <insert tableName="issue_priorities">
             <column name="name" value="High" />
             <column name="position" value="3" />
             <column name="issue_position" value="1" />
+            <column name="selected" valueBoolean="false" />
         </insert>
         <insert tableName="issue_priorities">
             <column name="name" value="Medium" />
             <column name="position" value="2" />
             <column name="issue_position" value="2" />
+            <column name="selected" valueBoolean="false" />
         </insert>
         <insert tableName="issue_priorities">
             <column name="name" value="Low" />
             <column name="position" value="1" />
             <column name="issue_position" value="3" />
+            <column name="selected" valueBoolean="true" />
         </insert>
 
         <addColumn tableName="issues">
