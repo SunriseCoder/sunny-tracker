@@ -22,22 +22,24 @@
 <body onload="pageLoaded();">
     <jsp:include page="includes/header.jsp" />
 
-    <iframe id="dashboardFrame" src="dashboard" frameborder="0" height="100%" scrolling="no" onload="FrameUtils.resizeHeight(this);"></iframe>
+    <iframe id="dashboardFrame" src="dashboard" frameborder="0" height="100%" scrolling="no"
+            onload="FrameUtils.resizeHeight(this);FrameUtils.toggleFrames('toolFrame1','toolFrame2','toolFrame2Button');"></iframe>
 
     <div class="toolFrame" style="top: 0px;">
         <span>
             <input id="radioToolFrame1" type="radio" name="frame" onclick="FrameUtils.setActiveFrame('toolFrame1');" />
             <label for="radioToolFrame1">Tool Frame 1</label>
         </span>
-        <iframe id="toolFrame1" frameborder="0" onload="FrameUtils.resizeHeight(this);"></iframe>
+        <iframe id="toolFrame1" frameborder="0"></iframe>
     </div>
 
-    <div class="toolFrame" style="top: 480px;">
+    <div id="divToolFrame2" class="toolFrame" style="bottom: 0px;">
         <span>
             <input id="radioToolFrame2" type="radio" name="frame" onclick="FrameUtils.setActiveFrame('toolFrame2');" />
             <label for="radioToolFrame2">Tool Frame 2</label>
+            <input id="toolFrame2Button" type="button" onclick="FrameUtils.toggleFrames('toolFrame1','toolFrame2','toolFrame2Button');" />
         </span>
-        <iframe id="toolFrame2" frameborder="0" onload="FrameUtils.resizeHeight(this);"></iframe>
+        <iframe id="toolFrame2" frameborder="0"></iframe>
     </div>
 </body>
 
