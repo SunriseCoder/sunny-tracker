@@ -14,7 +14,7 @@ IssueUtils = {
 
     submitForm: function(formId) {
         var form = $('#' + formId);
-        var radioButtonGroups = form.find('span[id]');
+        var radioButtonGroups = form.find('span[id*=".id"]');
         var visibleRadioButtonGrous = radioButtonGroups.filter(function() {
             return $(this).css("visibility") == "visible";
         });

@@ -130,26 +130,30 @@ public class IssueController {
 
     @PostMapping("/save")
     public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, Model model) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
-            return PAGE_EDIT;
-        }
-
         String message = null;
         String error = null;
         try {
-            issue = issueService.update(issue);
-            message = MessageFormat.format("Issue [{0}: {1}] has been saved.", issue.getId(), issue.getName());
-
-            injectAllData(model, issue);
-            injectIssueTree(model, issue);
+            if (!result.hasErrors()) {
+                issue = issueService.update(issue);
+                message = MessageFormat.format("Issue [{0}: {1}] has been saved.", issue.getId(), issue.getName());
+            }
         } catch (IssueNotFound e) {
             error = e.getMessage();
         } catch (Exception e) {
             error = "An error occured: " + e.getMessage();
         }
 
+        try {
+            injectAllData(model, issue);
+        } catch (Exception e) {
+            error += e.getMessage();
+        }
+
+        injectIssueTree(model, issue);
+
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+        }
         model.addAttribute("error", error);
         model.addAttribute("message", message);
 
