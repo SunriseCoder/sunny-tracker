@@ -13,6 +13,10 @@
     <script src="${appRoot}/scripts/frame-utils.js"></script>
     <script src="${appRoot}/scripts/issue-utils.js"></script>
     <script src="${appRoot}/scripts/jquery.js"></script>
+
+    <script>
+        IssueUtils.setIssueMoveUrl("${appRoot}/rest/issue/move");
+    </script>
 </head>
 <body>
 

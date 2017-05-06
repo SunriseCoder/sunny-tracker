@@ -128,4 +128,9 @@ public class IssueServiceImpl implements IssueService {
         Date time = new Date();
         issue.setChanged(time);
     }
+
+    @Override
+    public void move(Integer issueId, String direction) {
+        // TODO Auto-generated method stub
+    }
 }

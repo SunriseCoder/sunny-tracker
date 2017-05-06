@@ -1,11 +1,17 @@
 IssueUtils = {
+    _issueMoveUrl: undefined,
+
+    setIssueMoveUrl: function(url) {
+        IssueUtils._issueMoveUrl = url;
+    },
+
     refreshDashboard: function() {
         var frame = $(parent.document).find('#dashboardFrame')[0];
         frame.contentWindow.location.reload();
     },
 
     parentChanged: function() {
-    	var form = $('#issueForm');
+        var form = $('#issueForm');
         var parent = form.find('#parent\\.id')[0];
         var visibility = parent.value == 0 ? 'visible' : 'hidden';
         form.find('#project\\.id')[0].style.visibility = visibility;
@@ -27,5 +33,12 @@ IssueUtils = {
         } else {
             form.submit();
         }
+    },
+
+    moveIssue: function(issueId, direction) {
+        var url = IssueUtils._issueMoveUrl;
+        var data = {"issueId": issueId, "direction": direction};
+
+        $.post(url, data).done(IssueUtils.refreshDashboard);
     }
 }

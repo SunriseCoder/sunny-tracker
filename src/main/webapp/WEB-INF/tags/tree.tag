@@ -24,12 +24,12 @@
 
         <div class="move">
             <c:if test="${count.index != 0}">
-                <a href="#">&uarr;</a>
+                <a href="#" onclick="IssueUtils.moveIssue(${issue.id},'UP')">&uarr;</a>
             </c:if>
         </div>
         <div class="move">
             <c:if test="${count.count < items.size()}">
-                <a href="#">&darr;</a>
+                <a href="#" onclick="IssueUtils.moveIssue(${issue.id},'DOWN')">&darr;</a>
             </c:if>
         </div>
 
