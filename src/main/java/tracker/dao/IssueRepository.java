@@ -17,5 +17,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findByParent(Issue parent);
     List<Issue> findByParentAndPosition(Issue parent, Integer newPosition);
     List<Issue> findByParentIsNullAndProjectAndType(Project project, IssueType issueType);
+    List<Issue> findByParentIsNullAndProjectAndTypeAndPosition(Project project, IssueType type, Integer newPosition);
     List<Issue> findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(Integer projectId, Integer typeId);
 }

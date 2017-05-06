@@ -243,7 +243,13 @@ public class IssueServiceImpl implements IssueService {
 
         Integer newPosition = Math.max(0, issue.getPosition() - 1);
 
-        List<Issue> anotherIssues = repository.findByParentAndPosition(issue.getParent(), newPosition);
+        List<Issue> anotherIssues;
+        if (issue.getParent() == null) {
+            anotherIssues = repository.findByParentIsNullAndProjectAndTypeAndPosition(issue.getProject(),
+                    issue.getType(), newPosition);
+        } else {
+            anotherIssues = repository.findByParentAndPosition(issue.getParent(), newPosition);
+        }
         anotherIssues.forEach(i -> {
             i.setPosition(issue.getPosition());
             repository.save(i);
@@ -259,7 +265,13 @@ public class IssueServiceImpl implements IssueService {
         Integer amount = repository.countByParent(issue.getParent());
         Integer newPosition = Math.min(amount, issue.getPosition() + 1);
 
-        List<Issue> anotherIssues = repository.findByParentAndPosition(issue.getParent(), newPosition);
+        List<Issue> anotherIssues;
+        if (issue.getParent() == null) {
+            anotherIssues = repository.findByParentIsNullAndProjectAndTypeAndPosition(issue.getProject(),
+                    issue.getType(), newPosition);
+        } else {
+            anotherIssues = repository.findByParentAndPosition(issue.getParent(), newPosition);
+        }
         anotherIssues.forEach(i -> {
             i.setPosition(issue.getPosition());
             repository.save(i);
