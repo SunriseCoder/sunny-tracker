@@ -8,8 +8,11 @@
 <c:set var="appRoot" value="${pageContext.request.contextPath}" />
 
 <c:forEach var="issue" items="${items}" varStatus="count">
+
     <div class="issue ${fn:toLowerCase(issue.status.name)}" style="margin-left: ${indent}px">
+
         <div class="id">${issue.id}</div>
+
         <div class="name">
             <!-- Edit Issue -->
             <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/edit/${issue.id}.html')">${issue.name}</a>
@@ -18,7 +21,20 @@
                  &nbsp;&nbsp;&nbsp; <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${issue.project.id}/${issue.type.id}/${issue.id}');">(+)</a>
             </c:if>
         </div>
+
+        <div class="move">
+            <c:if test="${count.index != 0}">
+                <a href="#">&uarr;</a>
+            </c:if>
+        </div>
+        <div class="move">
+            <c:if test="${count.count < items.size()}">
+                <a href="#">&darr;</a>
+            </c:if>
+        </div>
+
         <div class="status">${issue.status.name}</div>
+
         <c:choose>
             <c:when test="${issue.status.name.equals('Closed')}">
                 <div class="priority">${issue.priority.name}</div>
@@ -27,8 +43,11 @@
                 <div class="priority ${fn:toLowerCase(issue.priority.name)}">${issue.priority.name}</div>
             </c:otherwise>
         </c:choose>
+
     </div>
+
     <c:if test="${not empty issue.childs}">
         <t:tree items="${issue.childs}" indent="${indent + 20}" />
     </c:if>
+
 </c:forEach>

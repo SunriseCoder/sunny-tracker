@@ -62,9 +62,21 @@ div.id {
 
 div.name {
     float: left;
-    width: 80%;
+    width: 74%;
     padding-left: 3px;
     background-color: inherit;
+}
+
+div.move {
+    float: left;
+    width: 2%;
+    text-align: left;
+    padding-right: 3px;
+    background-color: inherit;
+}
+
+div.move a:link {
+    text-decoration: none;
 }
 
 div.status {
