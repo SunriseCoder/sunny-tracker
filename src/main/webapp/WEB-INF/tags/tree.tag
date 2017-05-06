@@ -27,6 +27,9 @@
                 <a href="#" onclick="IssueUtils.moveIssue(${issue.id},'UP')">&uarr;</a>
             </c:if>
         </div>
+
+        <div class="move">${issue.position}</div>
+
         <div class="move">
             <c:if test="${count.count < items.size()}">
                 <a href="#" onclick="IssueUtils.moveIssue(${issue.id},'DOWN')">&darr;</a>

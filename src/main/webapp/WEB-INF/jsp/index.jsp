@@ -18,11 +18,11 @@
         }
     </script>
 </head>
-<body onload="pageLoaded();">
+<body onload="pageLoaded();FrameUtils.toggleFrames('toolFrame1','toolFrame2','toolFrame2Button');">
     <jsp:include page="includes/header.jsp" />
 
     <iframe id="dashboardFrame" src="dashboard" frameborder="0" height="100%" scrolling="no"
-            onload="FrameUtils.resizeHeight(this);FrameUtils.toggleFrames('toolFrame1','toolFrame2','toolFrame2Button');"></iframe>
+            onload="FrameUtils.resizeHeight(this);"></iframe>
 
     <div class="toolFrame" style="top: 0px;">
         <span>

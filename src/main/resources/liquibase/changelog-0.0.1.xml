@@ -74,6 +74,9 @@
                 <constraints primaryKey="false" nullable="false" foreignKeyName="fk_issues_project"
                              referencedTableName="projects" referencedColumnNames="id" />
             </column>
+            <column name="position" type="int">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 

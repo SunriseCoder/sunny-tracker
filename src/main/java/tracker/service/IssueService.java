@@ -14,5 +14,5 @@ public interface IssueService {
     public Issue update(Issue issue) throws IssueNotFound;
     public Issue delete(int id) throws IssueNotFound;
     public List<Issue> findRootIssues(Integer projectId, Integer typeId);
-    public void move(Integer issueId, String direction);
+    public void move(Integer issueId, String direction) throws IssueNotFound;
 }

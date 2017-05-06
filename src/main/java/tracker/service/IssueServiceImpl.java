@@ -1,7 +1,10 @@
 package tracker.service;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import tracker.comparator.IssueComparator;
 import tracker.dao.IssueRepository;
 import tracker.entity.Issue;
 import tracker.exception.IssueNotFound;
@@ -52,6 +56,7 @@ public class IssueServiceImpl implements IssueService {
             issue.setParent(null);
         }
 
+        Set<Issue> branchesToUpdatePositions = new LinkedHashSet<>();
         if (issue.getId() != null && issue.getId() != 0) {
             Issue storedIssue = repository.findOne(issue.getId());
 
@@ -60,14 +65,42 @@ public class IssueServiceImpl implements IssueService {
             }
 
             checkParentIsNotAChild(storedIssue, issue.getParent());
+
+            branchesToUpdatePositions.addAll(checkSimilarPosition(issue));
+            branchesToUpdatePositions.addAll(checkParentChanged(storedIssue, issue));
         }
 
         inheritParentValues(issue);
         updateChangedTime(issue);
+        setPosition(issue);
 
         issue = repository.save(issue);
 
+        branchesToUpdatePositions.forEach(parent -> rearrangePositions(parent));
+
         return issue;
+    }
+
+    private Set<Issue> checkSimilarPosition(Issue issue) {
+        Integer amount = repository.countByParentAndPosition(issue.getParent(), issue.getPosition());
+
+        if (amount > 0) {
+            return Collections.singleton(issue.getParent());
+        }
+
+        return Collections.emptySet();
+    }
+
+    private void rearrangePositions(Issue parent) {
+        List<Issue> issues = repository.findByParent(parent);
+        Collections.sort(issues, new IssueComparator());
+        for (int i = 0; i < issues.size(); i++) {
+            Issue issue = issues.get(i);
+            if (issue.getPosition() != i) {
+                issue.setPosition(i);
+                repository.save(issue);
+            }
+        }
     }
 
     @Override
@@ -111,6 +144,28 @@ public class IssueServiceImpl implements IssueService {
         }
     }
 
+    private Set<Issue> checkParentChanged(Issue oldIssue, Issue newIssue) {
+        if (equals(oldIssue.getParent(), newIssue.getParent())) {
+            return Collections.emptySet();
+        }
+
+        Integer position = repository.countByParent(newIssue.getParent());
+        newIssue.setPosition(position);
+
+        Set<Issue> toUpdate = new LinkedHashSet<>();
+        toUpdate.add(oldIssue.getParent());
+        toUpdate.add(newIssue.getParent());
+        return toUpdate;
+    }
+
+    private boolean equals(Issue issue1, Issue issue2) {
+        if (issue1 == null) {
+            return issue1 == issue2;
+        }
+
+        return issue1.getId().equals(issue2.getId());
+    }
+
     private void inheritParentValues(Issue issue) throws IssueNotFound {
         Issue parent = issue.getParent();
         if (parent != null) {
@@ -129,8 +184,60 @@ public class IssueServiceImpl implements IssueService {
         issue.setChanged(time);
     }
 
+    private void setPosition(Issue issue) {
+        if (issue.getPosition() != null) {
+            return;
+        }
+
+        Integer amount = repository.countByParent(issue.getParent());
+        issue.setPosition(amount);
+    }
+
     @Override
-    public void move(Integer issueId, String direction) {
-        // TODO Auto-generated method stub
+    @Transactional
+    public void move(Integer issueId, String direction) throws IssueNotFound {
+        switch (direction) {
+        case "UP":
+            moveUp(issueId);
+            break;
+
+        case "DOWN":
+            moveDown(issueId);
+            break;
+
+        default:
+            throw new UnsupportedOperationException("Move '" + direction + "'");
+        }
+    }
+
+    private void moveUp(Integer issueId) throws IssueNotFound {
+        Issue issue = findById(issueId);
+
+        Integer newPosition = Math.max(0, issue.getPosition() - 1);
+
+        List<Issue> anotherIssues = repository.findByParentAndPosition(issue.getParent(), newPosition);
+        anotherIssues.forEach(i -> {
+            i.setPosition(issue.getPosition());
+            repository.save(i);
+        });
+
+        issue.setPosition(newPosition);
+        repository.save(issue);
+    }
+
+    private void moveDown(Integer issueId) throws IssueNotFound {
+        Issue issue = findById(issueId);
+
+        Integer amount = repository.countByParent(issue.getParent());
+        Integer newPosition = Math.min(amount, issue.getPosition() + 1);
+
+        List<Issue> anotherIssues = repository.findByParentAndPosition(issue.getParent(), newPosition);
+        anotherIssues.forEach(i -> {
+            i.setPosition(issue.getPosition());
+            repository.save(i);
+        });
+
+        issue.setPosition(newPosition);
+        repository.save(issue);
     }
 }

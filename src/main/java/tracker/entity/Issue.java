@@ -30,6 +30,9 @@ public class Issue {
     private IssuePriority priority;
     @ManyToOne(fetch = FetchType.EAGER)
     private Project project;
+
+    private Integer position;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Issue> childs;
 
@@ -105,6 +108,14 @@ public class Issue {
         this.project = project;
     }
 
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
     public List<Issue> getChilds() {
         return childs;
     }
@@ -115,8 +126,11 @@ public class Issue {
 
     @Override
     public String toString() {
-        return String.format("Issue{id: %s, name: %s, description: %s, project: %s, type: %s, status: %s, priority: %s, position-by-status: %s, position-by-priority: %s}",
-                id, name, description, project != null ? project.getName() : null, type != null ? type.getName() : null, status != null ? status.getName() : null,
-                priority != null ? priority.getName() : null, status != null ? status.getIssuePosition() : null, priority != null ? priority.getIssuePosition() : null);
+        return String.format(
+                "Issue{id: %s, name: %s, description: %s, project: %s, type: %s, status: %s, priority: %s, position-by-status: %s, position-by-priority: %s}",
+                id, name, description, project != null ? project.getName() : null, type != null ? type.getName() : null,
+                status != null ? status.getName() : null, priority != null ? priority.getName() : null,
+                status != null ? status.getIssuePosition() : null,
+                priority != null ? priority.getIssuePosition() : null);
     }
 }

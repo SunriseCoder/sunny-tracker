@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import tracker.exception.IssueNotFound;
 import tracker.service.IssueService;
 
 @RestController
@@ -15,7 +16,8 @@ public class IssueRestController {
     private IssueService issueService;
 
     @PostMapping("move")
-    public void moveIssue(@RequestParam("issueId") Integer issueId, @RequestParam("direction") String direction) {
+    public void moveIssue(@RequestParam("issueId") Integer issueId, @RequestParam("direction") String direction)
+            throws IssueNotFound {
         issueService.move(issueId, direction);
     }
 }
