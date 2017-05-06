@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import tracker.entity.Issue;
+import tracker.entity.IssueType;
+import tracker.entity.Project;
 
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
@@ -14,5 +16,6 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 
     List<Issue> findByParent(Issue parent);
     List<Issue> findByParentAndPosition(Issue parent, Integer newPosition);
+    List<Issue> findByParentIsNullAndProjectAndType(Project project, IssueType issueType);
     List<Issue> findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(Integer projectId, Integer typeId);
 }

@@ -2,9 +2,12 @@ package tracker.service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -15,13 +18,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import tracker.comparator.IssueComparator;
 import tracker.dao.IssueRepository;
+import tracker.dao.IssueTypeRepository;
+import tracker.dao.ProjectRepository;
 import tracker.entity.Issue;
+import tracker.entity.IssueType;
+import tracker.entity.Project;
 import tracker.exception.IssueNotFound;
 
 @Component
 public class IssueServiceImpl implements IssueService {
     @Autowired
     private IssueRepository repository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private IssueTypeRepository issueTypeRepository;
+
     private Sort sortStatusPriority;
 
     public IssueServiceImpl() {
@@ -92,7 +104,23 @@ public class IssueServiceImpl implements IssueService {
     }
 
     private void rearrangePositions(Issue parent) {
-        List<Issue> issues = repository.findByParent(parent);
+        if (parent != null) {
+            List<Issue> issues = repository.findByParent(parent);
+            rearrangeIssuePositions(issues);
+            return;
+        }
+
+        List<Project> projects = projectRepository.findAll();
+        List<IssueType> issueTypes = issueTypeRepository.findAll();
+        for (Project project : projects) {
+            for (IssueType issueType : issueTypes) {
+                List<Issue> issues = repository.findByParentIsNullAndProjectAndType(project, issueType);
+                rearrangeIssuePositions(issues);
+            }
+        }
+    }
+
+    private void rearrangeIssuePositions(List<Issue> issues) {
         Collections.sort(issues, new IssueComparator());
         for (int i = 0; i < issues.size(); i++) {
             Issue issue = issues.get(i);
@@ -239,5 +267,19 @@ public class IssueServiceImpl implements IssueService {
 
         issue.setPosition(newPosition);
         repository.save(issue);
+    }
+
+    @Override
+    public void sortAllIssues() {
+        List<Issue> allIssues = repository.findAll();
+        Map<Integer, Issue> issueMap = allIssues.stream().collect(Collectors.toMap(Issue::getId, issue -> issue));
+
+        Set<Integer> allParentIds = new HashSet<>();
+        allIssues.forEach(issue -> {
+            Integer parentId = issue.getParent() == null ? null : issue.getParent().getId();
+            allParentIds.add(parentId);
+        });
+
+        allParentIds.stream().map(id -> issueMap.get(id)).forEach(this::rearrangePositions);
     }
 }
