@@ -38,15 +38,15 @@
         </createTable>
 
         <insert tableName="issue_types">
-            <column name="name" value="Bug" />
+            <column name="name" value="Bugs" />
             <column name="position" value="1" />
         </insert>
         <insert tableName="issue_types">
-            <column name="name" value="Task" />
+            <column name="name" value="Tasks" />
             <column name="position" value="2" />
         </insert>
         <insert tableName="issue_types">
-            <column name="name" value="Idea" />
+            <column name="name" value="Ideas" />
             <column name="position" value="3" />
         </insert>
     </changeSet>
