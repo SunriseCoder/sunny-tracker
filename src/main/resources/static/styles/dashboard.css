@@ -17,15 +17,15 @@ div {
 }
 
 div.table {
-    background-color: #eeeeee;
+    background-color: #eee;
     width: 80%;
     border-style: solid;
     border-width: 1px
 }
 
 div.project {
-    background-color: #bbbbff;
-    color: #ffffff;
+    background-color: #ddf;
+    color: #220;
     margin-left: 20px;
     padding-left: 5px;
     width: 100%;
@@ -34,8 +34,8 @@ div.project {
 }
 
 div.issuetype {
-    background-color: #bbffbb;
-    color: #ffffff;
+    background-color: #bfb;
+    color: #404;
     margin-left: 40px;
     padding-left: 5px;
     width: 100%;
@@ -44,8 +44,8 @@ div.issuetype {
 }
 
 div.issue {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #fff;
+    color: #000;
     padding-left: 5px;
     width: 100%;
     border-style: solid;
@@ -84,25 +84,25 @@ div.priority {
 }
 
 div.new {
-    background-color: #ddddff;
+    background-color: #eef;
 }
 
 div.active {
-    background-color: #ffdddd;
+    background-color: #fdd;
 }
 
 div.closed {
-    background-color: #ddffdd;
+    background-color: #dfd;
 }
 
 div.high {
-    background-color: #ff8080;
+    background-color: #fbb;
 }
 
 div.medium {
-    background-color: #80ff80;
+    background-color: #bfb;
 }
 
 div.low {
-    background-color: #8080ff;
+    background-color: #bbf;
 }
