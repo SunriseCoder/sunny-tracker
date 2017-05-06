@@ -5,11 +5,11 @@ Sunny-Tracker is an application tracker to manage issues. Regads tree view it's 
 
 Use following commands to manage project build:
 
-* `mvn clean install` to make development build
-* `mvn clean install -Puat` to make a build for UAT environment (with special application.properties file)
-* `mvn clean install -Pprod` to make a build for production environment (with special application.properties file)
+* `mvn clean install -Denv=dev` to make development build
+* `mvn clean install -Denv=uat` to make a build for UAT environment (with special application.properties file)
+* `mvn clean install -Denv=prod` to make a build for production environment (with special application.properties file)
 
-Note: **tomcat7-maven-plugin** deploys application during **install** phase, therefore if You need only to build a war-file without deployment - use `mvn clean package -P<profile>` instead.
+Note: **tomcat7-maven-plugin** deploys application during **install** phase, therefore if You need only to build a war-file without deployment - use `mvn clean package -Denv=<environment>` instead.
 
 ## Liquibase usage:
 

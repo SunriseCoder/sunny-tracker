@@ -1,5 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -10,9 +8,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-    <title>Sunny Tracker</title>
-
     <link rel="stylesheet" href="${appRoot}/styles/dashboard.css" />
 
     <script src="${appRoot}/scripts/frame-utils.js"></script>
@@ -35,7 +30,7 @@
             <div class="project">${structure.project.name}</div><br />
             <%-- Issue Types --%>
             <c:forEach var="issueTypeStructure" items="${structure.issueTypeStructures}">
-                <div class="issuetype">${issueTypeStructure.issueType.name}s &nbsp;&nbsp;&nbsp;
+                <div class="issuetype">${issueTypeStructure.issueType.name} &nbsp;&nbsp;&nbsp;
                     <!-- Create Root Issue -->
                     <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${structure.project.id}/${issueTypeStructure.issueType.id}');">(+)</a>
                 </div><br />

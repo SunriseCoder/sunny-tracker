@@ -1,4 +1,4 @@
-<%@ tag description="recursive tree node" pageEncoding="UTF-8" %>
+<%@ tag description="recursive tree node" %>
 <%@ attribute name="items" type="java.util.List" required="true" %>
 <%@ attribute name="indent" type="java.lang.Integer" required="true" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t" %>
