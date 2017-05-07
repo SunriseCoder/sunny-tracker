@@ -217,7 +217,13 @@ public class IssueServiceImpl implements IssueService {
             return;
         }
 
-        Integer amount = repository.countByParent(issue.getParent());
+        Integer amount;
+        if (issue.getParent() == null) {
+            amount = repository.countByParentIsNullAndProjectAndType(issue.getProject(), issue.getType());
+        } else {
+            amount = repository.countByParent(issue.getParent());
+        }
+
         issue.setPosition(amount);
     }
 

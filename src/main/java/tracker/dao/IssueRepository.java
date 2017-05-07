@@ -13,10 +13,11 @@ import tracker.entity.Project;
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
     Integer countByParent(Issue parent);
     Integer countByParentAndPosition(Issue parent, Integer position);
+    Integer countByParentIsNullAndProjectAndType(Project project, IssueType type);
 
     List<Issue> findByParent(Issue parent);
     List<Issue> findByParentAndPosition(Issue parent, Integer newPosition);
     List<Issue> findByParentIsNullAndProjectAndType(Project project, IssueType issueType);
-    List<Issue> findByParentIsNullAndProjectAndTypeAndPosition(Project project, IssueType type, Integer newPosition);
+    List<Issue> findByParentIsNullAndProjectAndTypeAndPosition(Project project, IssueType type, Integer position);
     List<Issue> findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(Integer projectId, Integer typeId);
 }
