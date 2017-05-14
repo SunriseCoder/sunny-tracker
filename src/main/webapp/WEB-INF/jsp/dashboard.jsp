@@ -36,8 +36,9 @@
             <c:forEach var="issueTypeStructure" items="${structure.issueTypeStructures}">
                 <div class="issuetype">${issueTypeStructure.issueType.name} &nbsp;&nbsp;&nbsp;
                     <!-- Create Root Issue -->
-                    <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${structure.project.id}/${issueTypeStructure.issueType.id}');">(+)</a>
-                </div><br />
+                    <a class="link" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${structure.project.id}/${issueTypeStructure.issueType.id}');">(+)</a>
+                </div>
+                <br />
                 <%-- Issues --%>
                 <t:tree indent="60" items="${issueTypeStructure.issues}" />
             </c:forEach>

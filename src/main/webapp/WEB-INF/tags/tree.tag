@@ -15,10 +15,10 @@
 
         <div class="name">
             <!-- Edit Issue -->
-            <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/edit/${issue.id}.html')">${issue.name}</a>
+            <a class="link" onclick="FrameUtils.showUrl('${appRoot}/issue/edit/${issue.id}.html')">${issue.name}</a>
             <c:if test="${not issue.status.name.equals('Closed')}">
                 <!-- Create Sub-Issue -->
-                 &nbsp;&nbsp;&nbsp; <a href="#" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${issue.project.id}/${issue.type.id}/${issue.id}');">(+)</a>
+                 &nbsp;&nbsp;&nbsp; <a class="link" onclick="FrameUtils.showUrl('${appRoot}/issue/create/${issue.project.id}/${issue.type.id}/${issue.id}');">(+)</a>
             </c:if>
         </div>
 
