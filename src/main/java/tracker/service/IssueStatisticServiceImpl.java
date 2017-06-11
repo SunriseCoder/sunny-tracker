@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,15 +21,33 @@ import tracker.entity.IssueStatistic;
 
 @Component
 public class IssueStatisticServiceImpl implements IssueStatisticService {
+    private static final Logger logger = LogManager.getLogger(IssueStatisticServiceImpl.class.getName());
+
     @Autowired
     private IssueService issueService;
     @Autowired
     private IssueStatisticRepository repository;
 
+    @Override
+    public List<IssueStatistic> findByIssueId(Integer id) {
+        return repository.findByIssueId(id);
+    }
+
+    @Override
+    @Transactional
+    public void save(IssueStatistic statistic) {
+        repository.save(statistic);
+    }
+
     @Scheduled(cron = "0 0 0 * * *")
     public void logStatistics() {
+        logger.info("logStatistic Job executed");
         Date date = new Date();
         List<Issue> issues = issueService.findMonitored();
+        logStatistics(issues, date);
+    }
+
+    private void logStatistics(List<Issue> issues, Date date) {
         for (Issue issue : issues) {
             logStatistic(issue, date);
         }
@@ -63,11 +83,5 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
         count += statistics.getSum();
 
         return count;
-    }
-
-    @Override
-    @Transactional
-    public void save(IssueStatistic statistic) {
-        repository.save(statistic);
     }
 }

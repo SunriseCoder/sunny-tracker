@@ -82,6 +82,8 @@ public class IssueStatusServiceImpl implements IssueStatusService {
             storedIssueStatus.setSelected(update.isSelected());
         }
 
+        storedIssueStatus.setCompleted(update.isCompleted());
+
         return storedIssueStatus;
     }
 

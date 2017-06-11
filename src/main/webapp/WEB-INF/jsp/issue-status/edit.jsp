@@ -33,6 +33,11 @@
                     <td><form:errors path="selected" cssStyle="color: red;" /></td>
                 </tr>
                 <tr>
+                    <td>Is Completed:</td>
+                    <td><form:checkbox path="completed" /></td>
+                    <td><form:errors path="completed" cssStyle="color: red;" /></td>
+                </tr>
+                <tr>
                     <td><input type="submit" value="Save" /></td>
                     <td></td>
                     <td></td>
