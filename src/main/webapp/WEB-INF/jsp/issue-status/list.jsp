@@ -31,6 +31,7 @@
                 <th width="50px">position</th>
                 <th width="50px">issue position</th>
                 <th width="50px">default</th>
+                <th width="50px">is completed</th>
                 <th width="50px">actions</th>
             </tr>
         </thead>
@@ -42,6 +43,7 @@
                     <td>${issueStatus.position}</td>
                     <td>${issueStatus.issuePosition}</td>
                     <td>${issueStatus.selected}</td>
+                    <td>${issueStatus.completed}</td>
                     <td>
                         <a href="${pageContext.request.contextPath}/issue-status/edit/${issueStatus.id}.html">Edit</a><br />
                         <a href="${pageContext.request.contextPath}/issue-status/delete/${issueStatus.id}.html">Delete</a>

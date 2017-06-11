@@ -32,6 +32,7 @@ public class Issue {
     private Project project;
 
     private Integer position;
+    private boolean monitored;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Issue> childs;
@@ -114,6 +115,14 @@ public class Issue {
 
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    public boolean isMonitored() {
+        return monitored;
+    }
+
+    public void setMonitored(boolean monitored) {
+        this.monitored = monitored;
     }
 
     public List<Issue> getChilds() {

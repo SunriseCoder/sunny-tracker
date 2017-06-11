@@ -66,6 +66,11 @@
                 <td><form:errors path="priority.id" cssStyle="color: red;" /></td>
             </tr>
             <tr>
+                <td>Monitored:</td>
+                <td><form:checkbox path="monitored" /></td>
+                <td><form:errors path="monitored" cssStyle="color: red;" /></td>
+            </tr>
+            <tr>
                 <td>Position:</td>
                 <td><form:input path="position" /></td>
                 <td><form:errors path="position" cssStyle="color: red;" /></td>

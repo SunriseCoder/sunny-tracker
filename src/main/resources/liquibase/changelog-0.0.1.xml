@@ -77,6 +77,9 @@
             <column name="position" type="int">
                 <constraints nullable="false" />
             </column>
+            <column name="monitored" type="boolean">
+                <constraints nullable="false" />
+            </column>
         </createTable>
     </changeSet>
 
@@ -97,6 +100,9 @@
             <column name="selected" type="boolean">
                 <constraints nullable="false" />
             </column>
+            <column name="completed" type="boolean">
+                <constraints nullable="false" />
+            </column>
         </createTable>
 
         <insert tableName="issue_statuses">
@@ -104,18 +110,21 @@
             <column name="position" value="1" />
             <column name="issue_position" value="2" />
             <column name="selected" valueBoolean="true" />
+            <column name="completed" valueBoolean="false" />
         </insert>
         <insert tableName="issue_statuses">
             <column name="name" value="Active" />
             <column name="position" value="2" />
             <column name="issue_position" value="1" />
             <column name="selected" valueBoolean="false" />
+            <column name="completed" valueBoolean="false" />
         </insert>
         <insert tableName="issue_statuses">
             <column name="name" value="Closed" />
             <column name="position" value="3" />
             <column name="issue_position" value="3" />
             <column name="selected" valueBoolean="false" />
+            <column name="completed" valueBoolean="true" />
         </insert>
 
         <addColumn tableName="issues">
@@ -189,4 +198,26 @@
             <column name="changed" type="datetime" afterColumn="description" />
         </addColumn>
     </changeSet>
+
+    <changeSet id="7" author="Sun">
+        <createTable tableName="issue_statistics">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="issue_id" type="int">
+                <constraints primaryKey="false" nullable="true" foreignKeyName="fk_issue_statistics_issue"
+                             referencedTableName="issues" referencedColumnNames="id" />
+            </column>
+            <column name="date" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="completed" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="total" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

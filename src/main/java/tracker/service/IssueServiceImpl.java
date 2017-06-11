@@ -43,18 +43,28 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     @Transactional
-    public List<Issue> findAll() {
-        return repository.findAll(sortStatusPriority);
-    }
-
-    @Override
-    @Transactional
     public Issue findById(int id) throws IssueNotFound {
         Issue issue = repository.findOne(id);
         if (issue == null) {
             throw new IssueNotFound(id);
         }
         return issue;
+    }
+
+    @Override
+    @Transactional
+    public List<Issue> findAll() {
+        return repository.findAll(sortStatusPriority);
+    }
+
+    @Override
+    public List<Issue> findRootIssues(Integer projectId, Integer typeId) {
+        return repository.findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(projectId, typeId);
+    }
+
+    @Override
+    public List<Issue> findMonitored() {
+        return repository.findByMonitoredTrue();
     }
 
     @Override
@@ -140,11 +150,6 @@ public class IssueServiceImpl implements IssueService {
         }
         repository.delete(id);
         return deletedIssue;
-    }
-
-    @Override
-    public List<Issue> findRootIssues(Integer projectId, Integer typeId) {
-        return repository.findByParentIsNullAndProjectIdAndTypeIdOrderByNameAsc(projectId, typeId);
     }
 
     private void checkParentIsNotAChild(Issue issue, Issue parent) {

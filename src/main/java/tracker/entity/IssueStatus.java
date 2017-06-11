@@ -12,7 +12,8 @@ public class IssueStatus {
     private String name;
     private int position;
     private int issuePosition;
-    private Boolean selected;
+    private boolean selected;
+    private boolean completed;
 
     public Integer getId() {
         return id;
@@ -50,8 +51,16 @@ public class IssueStatus {
         return selected;
     }
 
-    public void setSelected(Boolean selected) {
+    public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     @Override
