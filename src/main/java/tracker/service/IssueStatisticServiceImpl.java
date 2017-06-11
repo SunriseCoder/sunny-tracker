@@ -49,6 +49,9 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
         logger.info("logStatistic Job executed");
         Date date = new Date();
         List<Issue> issues = issueService.findMonitored();
+        issues = issues.stream()
+                .filter(issue -> !issue.getStatus().isCompleted())
+                .collect(Collectors.toList());
         logStatistics(issues, date);
     }
 
