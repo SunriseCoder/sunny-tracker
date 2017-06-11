@@ -34,6 +34,11 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
     }
 
     @Override
+    public IssueStatistic findLastForIssue(Issue issue) {
+        return countStatistic(issue, new Date());
+    }
+
+    @Override
     @Transactional
     public void save(IssueStatistic statistic) {
         repository.save(statistic);
@@ -54,6 +59,11 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
     }
 
     private void logStatistic(Issue issue, Date date) {
+        IssueStatistic statistic = countStatistic(issue, date);
+        save(statistic);
+    }
+
+    private IssueStatistic countStatistic(Issue issue, Date date) {
         int completed = countLines(issue, i -> i.getStatus().isCompleted());
         int total = countLines(issue, i -> true);
 
@@ -62,8 +72,7 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
         statistic.setDate(date);
         statistic.setCompleted(completed);
         statistic.setTotal(total);
-
-        save(statistic);
+        return statistic;
     }
 
     private int countLines(Issue issue, Predicate<Issue> predicate) {

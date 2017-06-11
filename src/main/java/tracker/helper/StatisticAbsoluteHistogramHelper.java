@@ -14,9 +14,28 @@ public class StatisticAbsoluteHistogramHelper {
     private static final int BIN_WIDTH = 5;
 
     public static BufferedImage generateAbsoluteHistogram(List<IssueStatistic> statistics) {
+        if (statistics.isEmpty()) {
+            return generateNoDataImage();
+        }
+
         int maxTotal = getMaxTotal(statistics);
         BufferedImage image = generateImage(statistics, maxTotal);
         drawBins(image, statistics, maxTotal);
+        return image;
+    }
+
+    private static BufferedImage generateNoDataImage() {
+        BufferedImage image = new BufferedImage(70, 30, BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = image.getGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, 70, 30);
+
+        graphics.setColor(Color.RED);
+        graphics.drawRect(0, 0, 69, 29);
+
+        graphics.setColor(Color.RED);
+        graphics.drawString("No data", 15, 20);
+
         return image;
     }
 

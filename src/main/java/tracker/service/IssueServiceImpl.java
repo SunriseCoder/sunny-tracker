@@ -21,6 +21,7 @@ import tracker.dao.IssueRepository;
 import tracker.dao.IssueTypeRepository;
 import tracker.dao.ProjectRepository;
 import tracker.entity.Issue;
+import tracker.entity.IssueStatistic;
 import tracker.entity.IssueType;
 import tracker.entity.Project;
 import tracker.exception.IssueNotFound;
@@ -33,6 +34,8 @@ public class IssueServiceImpl implements IssueService {
     private ProjectRepository projectRepository;
     @Autowired
     private IssueTypeRepository issueTypeRepository;
+    @Autowired
+    private IssueStatisticService issueStatisticService;
 
     private Sort sortStatusPriority;
 
@@ -64,7 +67,12 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public List<Issue> findMonitored() {
-        return repository.findByMonitoredTrue();
+        List<Issue> issues = repository.findByMonitoredTrue();
+        issues.stream().forEach(issue -> {
+            IssueStatistic statistic = issueStatisticService.findLastForIssue(issue);
+            issue.setStatistic(statistic);
+        });
+        return issues;
     }
 
     @Override

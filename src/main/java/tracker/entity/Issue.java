@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 @Entity(name = "issues")
 public class Issue {
@@ -36,6 +37,9 @@ public class Issue {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent")
     private List<Issue> childs;
+
+    @Transient
+    private IssueStatistic statistic;
 
     public Integer getId() {
         return id;
@@ -131,6 +135,14 @@ public class Issue {
 
     public void setChilds(List<Issue> childs) {
         this.childs = childs;
+    }
+
+    public IssueStatistic getStatistic() {
+        return statistic;
+    }
+
+    public void setStatistic(IssueStatistic statistic) {
+        this.statistic = statistic;
     }
 
     @Override
