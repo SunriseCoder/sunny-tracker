@@ -17,11 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import tracker.entity.Issue;
 import tracker.entity.IssueStatistic;
-import tracker.helper.StatisticAbsoluteHistogramHelper;
+import tracker.helper.StatisticHistogramGenerator;
 import tracker.service.IssueService;
 import tracker.service.IssueStatisticService;
 
@@ -45,14 +46,20 @@ public class MonitoringController {
 
     @GetMapping(value = "/histogram/{issueId}", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
-    public byte[] createRootIssuePage(@PathVariable Integer issueId, HttpServletResponse response) {
-        BufferedImage image = generateHistogram(issueId);
+    public byte[] createHistogram(@PathVariable Integer issueId, HttpServletResponse response,
+                    @RequestParam(name = "h", required = false) Integer h, @RequestParam(name = "w", required = false) Integer w) {
+
+        List<IssueStatistic> statistics = issueStatisticService.findByIssueId(issueId);
+        BufferedImage image = generateHistogram(h, w, statistics);
         return getData(image);
     }
 
-    private BufferedImage generateHistogram(Integer issueId) {
-        List<IssueStatistic> statistics = issueStatisticService.findByIssueId(issueId);
-        return StatisticAbsoluteHistogramHelper.generateAbsoluteHistogram(statistics);
+    private BufferedImage generateHistogram(Integer h, Integer w, List<IssueStatistic> statistics) {
+        StatisticHistogramGenerator generator = new StatisticHistogramGenerator();
+        generator.setBinPartHeight(h);
+        generator.setBinWidth(w);
+        generator.setData(statistics);
+        return generator.generate();
     }
 
     private byte[] getData(BufferedImage image) {
