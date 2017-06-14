@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import tracker.entity.IssueStatistic;
+import tracker.util.MathUtils;
 
 public class StatisticHistogramGenerator {
-    private static final int REC_HISTOGRAM_HEIGHT = 200;
+    private static final int REC_HISTOGRAM_HEIGHT = 500;
     private static final int REC_HISTOGRAM_WIDTH = 1800;
 
     private static final int MIN_BIN_PART_HEIGHT = 3;
@@ -59,13 +60,13 @@ public class StatisticHistogramGenerator {
         calculateMaxBinAmount();
 
         if (binPartHeight == 0 && !data.isEmpty()) {
-            binPartHeight = Math.max(MIN_BIN_PART_HEIGHT, REC_HISTOGRAM_HEIGHT / maxTotal);
-            binPartHeight = Math.min(binPartHeight, MAX_BIN_PART_HEIGHT);
+            binPartHeight = REC_HISTOGRAM_HEIGHT / maxTotal;
+            binPartHeight = MathUtils.fitToBounds(binPartHeight, MIN_BIN_PART_HEIGHT, MAX_BIN_PART_HEIGHT);
         }
 
         if (binWidth == 0 && !data.isEmpty()) {
-            binWidth = Math.min(MAX_BIN_WIDTH, REC_HISTOGRAM_WIDTH / data.size());
-            binWidth = Math.max(MIN_BIN_WIDTH, binWidth);
+            binWidth = REC_HISTOGRAM_WIDTH / data.size();
+            binWidth = MathUtils.fitToBounds(binWidth, MIN_BIN_WIDTH, MAX_BIN_WIDTH);
         }
     }
 
