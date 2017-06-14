@@ -1,0 +1,3 @@
+mvn clean package
+rm -rf /d/tools/apache-tomcat-8.5.14/webapps/sunny-tracker-*
+cp target/sunny-tracker-*.war /d/tools/apache-tomcat-8.5.14/webapps/

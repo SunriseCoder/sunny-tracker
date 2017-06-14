@@ -1,0 +1,22 @@
+insert into issues values ('1', NULL, 'Release 0.0.1', '', '2017-06-14 13:07:23', '2', '1', '0', 1, '2', '3');
+insert into issues values ('2', '1', 'Security Module', '1. Introduce Spring Security\r\n2. URL-based security rules', '2017-06-14 13:05:55', '2', '1', '0', 0, '2', '3');
+insert into issues values ('3', '2', 'Authentication mechanism', '', '2017-06-14 13:08:20', '2', '1', '0', 0, '3', '3');
+insert into issues values ('4', '2', 'User management', '', '2017-06-14 13:10:17', '2', '1', '1', 0, '3', '3');
+insert into issues values ('5', '1', 'Server administration', '', '2017-06-14 13:12:03', '2', '1', '1', 0, '3', '3');
+insert into issues values ('6', '5', 'Database backup scripts', '', '2017-06-14 13:13:29', '2', '1', '0', 0, '3', '3');
+insert into issues values ('7', '5', 'SSL certificates', '', '2017-06-14 13:13:33', '2', '1', '1', 0, '3', '3');
+insert into issues values ('8', '2', 'Audit', '', '2017-06-14 13:13:24', '2', '1', '2', 0, '2', '3');
+insert into issues values ('9', '5', 'Deployment scripts', '', '2017-06-14 13:12:57', '2', '1', '2', 0, '1', '3');
+insert into issues values ('10', '2', 'IP-Ban', '', '2017-06-14 13:13:55', '2', '1', '3', 0, '1', '3');
+insert into issues values ('11', '10', 'Click on User', '', '2017-06-14 13:14:31', '2', '1', '0', 0, '1', '3');
+
+insert into issue_statistics values ('1', '1', '2017-06-14 13:08:00', '0', '9');
+insert into issue_statistics values ('2', '1', '2017-06-14 13:09:00', '1', '9');
+insert into issue_statistics values ('3', '1', '2017-06-14 13:10:00', '1', '10');
+insert into issue_statistics values ('4', '1', '2017-06-14 13:11:00', '2', '10');
+insert into issue_statistics values ('5', '1', '2017-06-14 13:12:00', '2', '10');
+insert into issue_statistics values ('6', '1', '2017-06-14 13:13:00', '3', '11');
+insert into issue_statistics values ('7', '1', '2017-06-14 13:14:00', '5', '12');
+insert into issue_statistics values ('8', '1', '2017-06-14 13:15:00', '5', '13');
+insert into issue_statistics values ('9', '1', '2017-06-14 13:16:00', '5', '13');
+insert into issue_statistics values ('10', '1', '2017-06-14 13:17:00', '5', '13');
