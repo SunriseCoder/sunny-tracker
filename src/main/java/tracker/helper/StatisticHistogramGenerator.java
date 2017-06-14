@@ -14,7 +14,7 @@ public class StatisticHistogramGenerator {
     private static final int REC_HISTOGRAM_HEIGHT = 200;
     private static final int REC_HISTOGRAM_WIDTH = 1800;
 
-    private static final int MIN_BIN_PART_HEIGHT = 2;
+    private static final int MIN_BIN_PART_HEIGHT = 3;
     private static final int MAX_BIN_PART_HEIGHT = 50;
 
     private static final int MIN_BIN_WIDTH = 5;
