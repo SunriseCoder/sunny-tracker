@@ -26,7 +26,6 @@
     </style>
 </head>
 <body onload="IssueUtils.parentChanged();">
-    <h1>Issue</h1>
 
     <%-- Validation errors --%>
     <c:if test="${not empty errors}">
@@ -37,12 +36,12 @@
 
     <%-- Saving error --%>
     <c:if test="${not empty error}">
-        <p class="error">${error}</p>
+        <span class="error">${error}</span>
     </c:if>
 
     <%-- Success message --%>
     <c:if test="${not empty message}">
-        <p class="success">${message}</p>
+        <span class="success">${message}</span>
         <script>IssueUtils.refreshDashboard();</script>
     </c:if>
 
