@@ -35,7 +35,7 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
 
     @Override
     public IssueStatistic findLastForIssue(Issue issue) {
-        return countStatistic(issue, new Date());
+        return calculateStatistic(issue, new Date());
     }
 
     @Override
@@ -62,11 +62,11 @@ public class IssueStatisticServiceImpl implements IssueStatisticService {
     }
 
     private void logStatistic(Issue issue, Date date) {
-        IssueStatistic statistic = countStatistic(issue, date);
+        IssueStatistic statistic = calculateStatistic(issue, date);
         save(statistic);
     }
 
-    private IssueStatistic countStatistic(Issue issue, Date date) {
+    private IssueStatistic calculateStatistic(Issue issue, Date date) {
         int completed = countLines(issue, i -> i.getStatus().isCompleted());
         int total = countLines(issue, i -> true);
 

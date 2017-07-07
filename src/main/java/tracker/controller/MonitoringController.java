@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import tracker.entity.Issue;
 import tracker.entity.IssueStatistic;
+import tracker.exception.IssueNotFound;
 import tracker.helper.StatisticHistogramGenerator;
 import tracker.service.IssueService;
 import tracker.service.IssueStatisticService;
@@ -50,6 +51,13 @@ public class MonitoringController {
                     @RequestParam(name = "h", required = false) Integer h, @RequestParam(name = "w", required = false) Integer w) {
 
         List<IssueStatistic> statistics = issueStatisticService.findByIssueId(issueId);
+        try {
+            Issue issue = issueService.findById(issueId);
+            IssueStatistic lastStatistic = issueStatisticService.findLastForIssue(issue);
+            statistics.add(lastStatistic);
+        } catch (IssueNotFound e) {
+            // Just swallowing exception, because we don't have to add recent statistic of non-existent issue
+        }
         BufferedImage image = generateHistogram(h, w, statistics);
         return getData(image);
     }
