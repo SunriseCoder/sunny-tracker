@@ -12,5 +12,6 @@
         <td><a href="${appRoot}/issue-priority">Issue Priorities</a></td>
         <td><a href="${appRoot}/issue">Issues</a></td>
         <td><a href="${appRoot}/monitoring?h=0&w=0">Monitoring</a></td>
+        <td><a href="${appRoot}/health">Health</a></td>
     </tr>
 </table>
