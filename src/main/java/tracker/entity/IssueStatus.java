@@ -12,6 +12,7 @@ public class IssueStatus {
     private String name;
     private int position;
     private int issuePosition;
+    private int attentionRate;
     private boolean selected;
     private boolean completed;
 
@@ -45,6 +46,14 @@ public class IssueStatus {
 
     public void setIssuePosition(int issuePosition) {
         this.issuePosition = issuePosition;
+    }
+
+    public int getAttentionRate() {
+        return attentionRate;
+    }
+
+    public void setAttentionRate(int attentionRate) {
+        this.attentionRate = attentionRate;
     }
 
     public boolean isSelected() {

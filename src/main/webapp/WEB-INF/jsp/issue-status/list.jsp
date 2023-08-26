@@ -30,6 +30,7 @@
                 <th width="300px">name</th>
                 <th width="50px">position</th>
                 <th width="50px">issue position</th>
+                <th width="50px">attention rate</th>
                 <th width="50px">default</th>
                 <th width="50px">is completed</th>
                 <th width="50px">actions</th>
@@ -42,6 +43,7 @@
                     <td>${issueStatus.name}</td>
                     <td>${issueStatus.position}</td>
                     <td>${issueStatus.issuePosition}</td>
+                    <td>${issueStatus.attentionRate}</td>
                     <td>${issueStatus.selected}</td>
                     <td>${issueStatus.completed}</td>
                     <td>
@@ -58,6 +60,7 @@
         Issue Status name: <form:input path="name" /><form:errors path="name" cssStyle="color: red;" /><br />
         Position in the List: <form:input path="position" /><form:errors path="position" cssStyle="color: red;" /><br />
         Issue Position: <form:input path="issuePosition" /><form:errors path="issuePosition" cssStyle="color: red;" /><br />
+        Attention Rate: <form:input path="attentionRate" /><form:errors path="attentionRate" cssStyle="color: red;" /><br />
         <input type="submit" value="Create" />
     </form:form>
 </body>

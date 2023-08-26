@@ -72,7 +72,7 @@ div.id {
 
 div.name {
     float: left;
-    width: 70%;
+    width: 65%;
     padding-left: 3px;
     background-color: inherit;
 }
@@ -91,9 +91,9 @@ div.move a:link {
 
 div.status {
     float: left;
-    width: 7%;
+    min-width: 7%;
     text-align: left;
-    padding-right: 3px;
+    padding-right: 10px;
     background-color: inherit;
 }
 
@@ -105,17 +105,29 @@ div.priority {
     background-color: inherit;
 }
 
-div.new {
-    background-color: #eef;
+/* Statuses */
+
+div.status1 {
+    background-color: #bdf;
 }
 
-div.active {
-    background-color: #fdd;
+div.status2 {
+    background-color: #bfb;
 }
 
-div.closed {
-    background-color: #dfd;
+div.status3 {
+    background-color: #ffa;
 }
+
+div.status4 {
+    background-color: #fd8;
+}
+
+div.status5 {
+    background-color: #fbb;
+}
+
+/* Priorities */
 
 div.high {
     background-color: #fbb;

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -28,6 +30,8 @@ import tracker.exception.IssueNotFound;
 
 @Component
 public class IssueServiceImpl implements IssueService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(IssueServiceImpl.class);
+
     @Autowired
     private IssueRepository repository;
     @Autowired

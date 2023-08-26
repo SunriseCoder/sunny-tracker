@@ -220,4 +220,10 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="8" author="Sun">
+        <addColumn tableName="issue_statuses">
+            <column name="attention_rate" type="int" afterColumn="issue_position" />
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

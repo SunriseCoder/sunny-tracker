@@ -9,7 +9,7 @@
 
 <c:forEach var="issue" items="${items}" varStatus="count">
 
-    <div class="issue ${fn:toLowerCase(issue.status.name)}" style="margin-left: ${indent}px">
+    <div class="issue status${fn:toLowerCase(issue.status.attentionRate)}" style="margin-left: ${indent}px">
 
         <div class="id">${issue.id}</div>
 

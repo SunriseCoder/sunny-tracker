@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,8 @@ import tracker.validation.IssueValidator;
 @Controller
 @RequestMapping("/issue")
 public class IssueController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(IssueController.class);
+
     private static final String PAGE_LIST = "issue/list";
     private static final String PAGE_EDIT = "issue/edit";
 
@@ -130,23 +134,28 @@ public class IssueController {
 
     @PostMapping("/save")
     public String saveIssue(@ModelAttribute @Valid Issue issue, BindingResult result, Model model) {
-        String message = null;
-        String error = null;
+        String message = "";
+        String error = "";
         try {
-            if (!result.hasErrors()) {
+            if (result.hasErrors()) {
+            	error += MessageFormat.format("Issue [{0}: {1}] validation failed.", issue.getId(), issue.getName());
+            } else {
                 issue = issueService.update(issue);
-                message = MessageFormat.format("Issue [{0}: {1}] has been saved.", issue.getId(), issue.getName());
+                message += MessageFormat.format("Issue [{0}: {1}] has been saved.", issue.getId(), issue.getName());
             }
         } catch (IssueNotFound e) {
-            error = e.getMessage();
+            error = "Issue not found: " + e.getMessage();
+            LOGGER.error(error, e);
         } catch (Exception e) {
             error = "An error occured: " + e.getMessage();
+            LOGGER.error(error, e);
         }
 
         try {
             injectAllData(model, issue);
         } catch (Exception e) {
             error += e.getMessage();
+            LOGGER.error(error, e);
         }
 
         injectIssueTree(model, issue);

@@ -28,6 +28,11 @@
                     <td><form:errors path="issuePosition" cssStyle="color: red;" /></td>
                 </tr>
                 <tr>
+                    <td>Attention Rate:</td>
+                    <td><form:input path="attentionRate" /></td>
+                    <td><form:errors path="attentionRate" cssStyle="color: red;" /></td>
+                </tr>
+                <tr>
                     <td>Default:</td>
                     <td><form:checkbox path="selected" /></td>
                     <td><form:errors path="selected" cssStyle="color: red;" /></td>
