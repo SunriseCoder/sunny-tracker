@@ -40,5 +40,16 @@ IssueUtils = {
         var data = {"issueId": issueId, "direction": direction};
 
         $.post(url, data).done(IssueUtils.refreshDashboard);
+    },
+
+    deleteIssueWithConfirmation: function(url, issueId) {
+        var confirmText = "Are you sure to delete Issue with ID: " + issueId + " ?";
+        if (!confirm(confirmText)) {
+            return;
+        }
+
+        var data = {"issueId": issueId};
+
+        $.post(url, data).done(IssueUtils.refreshDashboard);
     }
 }

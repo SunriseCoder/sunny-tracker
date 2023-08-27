@@ -47,5 +47,6 @@
 
     <jsp:include page="../includes/issue-form.jsp" />
     <input type="button" value="Save" onclick="IssueUtils.submitForm('issueForm');" />
+    <input type="button" value="Delete" onclick="IssueUtils.deleteIssueWithConfirmation('${appRoot}/rest/issue/delete', ${issue.id});" />
 </body>
 </html>

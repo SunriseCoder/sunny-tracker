@@ -22,6 +22,11 @@ public class IssueRestController {
         issueService.move(issueId, direction);
     }
 
+    @PostMapping("delete")
+    public void deleteIssue(@RequestParam("issueId") Integer issueId) throws IssueNotFound {
+        issueService.delete(issueId);
+    }
+
     @GetMapping("sort")
     public void sortIssues() {
         issueService.sortAllIssues();
